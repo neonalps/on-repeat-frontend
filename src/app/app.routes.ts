@@ -4,6 +4,7 @@ import { OauthSpotifyComponent } from '@src/app/oauth/spotify/oauth.spotify.comp
 import { DashboardComponent } from '@src/app/dashboard/dashboard.component';
 import { loggedInGuard } from '@src/app/auth/guards/loggedin.guard';
 import { RecentlyPlayedComponent } from '@src/app/recently-played/recently-played.component';
+import { ProfileComponent } from '@src/app/pages/profile/profile.component';
 
 export const routes: Routes = [
     { 
@@ -18,6 +19,11 @@ export const routes: Routes = [
     {
          path: 'oauth/spotify', 
          component: OauthSpotifyComponent,
+    },
+    { 
+        path: 'profile', 
+        component: ProfileComponent,
+        canActivate: [loggedInGuard],
     },
     { 
         path: 'recently-played', 
