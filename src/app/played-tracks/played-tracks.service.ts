@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment';
 import { PaginatedResponseDto, PlayedTrackApiDto } from '@src/app/models';
 import { Observable } from 'rxjs';
-import { isDefined } from '../util/common';
+import { API_QUERY_PARAM_NEXT_PAGE_KEY, isDefined } from '@src/app/util/common';
+import { getHeaderWithAuthorization } from '@src/app/util/http';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,11 @@ export class PlayedTracksService {
   fetchRecentlyPlayedTracks(accessToken: string, nextPageKey?: string): Observable<PaginatedResponseDto<PlayedTrackApiDto>> {
     const queryParams = new URLSearchParams();
     if (isDefined(nextPageKey)) {
-      queryParams.set("nextPageKey", nextPageKey as string);
+      queryParams.set(API_QUERY_PARAM_NEXT_PAGE_KEY, nextPageKey as string);
     }
 
     const requestUrl = `${PlayedTracksService.PLAYED_TRACKS_URL}?${queryParams.toString()}`;
-    return this.http.get<PaginatedResponseDto<PlayedTrackApiDto>>(requestUrl, 
-      { headers: { 'Authorization': `Bearer ${accessToken}` } }
-      );
+    return this.http.get<PaginatedResponseDto<PlayedTrackApiDto>>(requestUrl, getHeaderWithAuthorization(accessToken));
   }
 
 }

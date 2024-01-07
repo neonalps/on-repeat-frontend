@@ -1,5 +1,14 @@
 @import "theme.css";
 
+.color-primary {
+    color: var(--primary);
+}
+
+.color-primary-hover:hover {
+    color: var(--primary);
+    transition: color .2s ease-in;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -198,6 +207,36 @@
 
 .xxs {
     font-size: xx-small;
+}
+
+.text-xs {
+    font-size: .75rem;
+    line-height: 1rem;
+}
+
+.text-sm {
+    font-size: .875rem;
+    line-height: 1.25rem;
+}
+
+.text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
 }
 
 .relative {
