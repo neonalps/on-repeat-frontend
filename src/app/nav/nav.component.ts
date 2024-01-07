@@ -36,13 +36,13 @@ export class NavComponent {
         this.user = value;
       });
 
-      this.router.events
-        .pipe(takeUntilDestroyed())
-        .subscribe(value => {
-          if (value instanceof NavigationEnd) {
-            this.hideMenu();
-          }
-        });
+    this.router.events
+      .pipe(takeUntilDestroyed())
+      .subscribe(value => {
+        if (value instanceof NavigationEnd) {
+          this.hideMenu();
+        }
+      });
   }
 
   goToHome() {

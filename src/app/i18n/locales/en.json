@@ -1,4 +1,7 @@
 {
+    "connect.spotify": "Connect Spotify account",
+    "connectedAccounts.empty": "There are no music accounts connected yet 😢",
+    "connectedAccounts.title": "Connected music accounts ♪",
     "filter": "Filter",
     "home.title": "Home",
     "loading": "Loading...",
@@ -7,8 +10,10 @@
     "login.spotify": "Login with Spotify",
     "logout.title": "Logout",
     "dashboard.title": "Dashboard",
+    "profile.title": "Profile",
     "recentlyPlayedTracks.title": "Recently played tracks",
     "recentlyPlayedTracks.empty": "No played tracks recorded yet. Why don't you go and listen to some right now?",
     "recentlyPlayedTracks.loadMore": "Load more tracks",
-    "reload": "Reload"
+    "reload": "Reload",
+    "signed.in.as": "Signed in as"
 }

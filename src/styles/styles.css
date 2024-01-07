@@ -28,15 +28,6 @@ header {
     padding: .5rem 0;
 }
 
-.color-primary {
-    color: var(--primary);
-}
-
-.color-primary-hover:hover {
-    color: var(--primary);
-    transition: color .2s ease-in;
-}
-
 .nav-container {
     display: flex;
     align-items: center;
@@ -74,12 +65,16 @@ header {
 
 .title {
     font-weight: bold;
-    font-size: larger;
+    font-size: 1.5rem;
+    line-height: 2rem;
     margin-top: .75rem;
 }
 
-.page-content {
-    
+.section-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    margin-top: .75rem;
 }
 
 .content {

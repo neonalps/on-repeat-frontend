@@ -5,13 +5,13 @@
     </span>
     <nav class="nav" [ngClass]="{'active': (menuVisible$ | async) === true}">
         <ul class="nav--ul__one">
-            <li class="nav-link"><a href="#">{{ 'home.title' | $t }}</a></li>
+            <li class="nav-link"><a>{{ 'home.title' | $t }}</a></li>
             <li class="nav-link"><a [routerLink]="['/dashboard']">{{ 'dashboard.title' | $t }}</a></li>
             <li class="nav-link"><a [routerLink]="['/recently-played']">{{ 'recentlyPlayedTracks.title' | $t }}</a></li>
         </ul>
         <ul class="nav--ul__two">
             <ng-container *ngIf="user !== null; else login">
-                <li class="nav-link">{{ user.username }}</li>
+                <li class="nav-link"><a [routerLink]="['/profile']">{{ user.username }}</a></li>
                 <li class="nav-link pointer" (click)="logout()">{{ 'logout.title' | $t }}</li>
             </ng-container>
             <ng-template #login>

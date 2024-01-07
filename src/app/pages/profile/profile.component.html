@@ -1,0 +1,27 @@
+<section class="page-content large-screen">
+    <section class="large-screen-placeholder"></section>
+    <section class="content large-screen-main">
+        <section class="page-content-header flex">
+            <div class="title flex-auto">{{ 'profile.title' | $t }}</div>
+        </section>
+        <section class="page-content-main mt-16">
+            <div class="text-lg">{{ 'signed.in.as' | $t }} <span class="bold color-primary">{{ username }}</span></div>
+
+            <section class="mt-24">
+                <div class="section-title">{{ 'connectedAccounts.title' | $t }}</div>
+                <div>
+                    <app-loading *ngIf="loading" />
+                    <ng-container *ngIf="!loading && accountTokens.length > 0; else emptyList"></ng-container>
+                    <ng-template #emptyList>
+                        <div class="mt-32">{{ 'connectedAccounts.empty' | $t }}</div>
+
+                        <div>
+                            <div class="spotify-button mt-32" role="button" (click)="connectSpotify()">{{ 'connect.spotify' | $t }}</div>
+                        </div>
+                    </ng-template>
+                </div>
+            </section>
+        </section>
+    </section>
+    <section class="large-screen-placeholder"></section>
+</section>
