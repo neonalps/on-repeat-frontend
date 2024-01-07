@@ -1,0 +1,13 @@
+<div class="mt-24 flex">
+    <div class="image-container flex-auto flex justify-content-center align-self-center">
+        <img loading="lazy" [src]="getImageUrl()" [attr.height]="getImageHeight()" [attr.width]="getImageWidth()"/>
+    </div>
+    <div class="track-details-container pl-8">
+        <div class="xs">{{ getPlayedAt() | date:'shortTime' }} </div>
+        <div class="mt-8"><a class="bold pointer color-primary-hover">{{ getArtists() }}</a></div>
+        <div class="mt-4"><a class="pointer color-primary-hover">{{ getTitle() }}</a></div>
+    </div>
+    <div class="flex-auto flex justify-content-center align-self-center">
+        <app-toggle-checkbox />
+    </div>
+</div>

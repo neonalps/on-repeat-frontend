@@ -1,0 +1,23 @@
+<div class="nav-container">
+    <span class="logo pointer flex align-items-center" (click)="goToHome()">
+      <app-app-logo [width]="24" [top]="3" />
+      <span class="inline-block ml-12">on repeat</span>
+    </span>
+    <nav class="nav" [ngClass]="{'active': (menuVisible$ | async) === true}">
+        <ul class="nav--ul__one">
+            <li class="nav-link"><a href="#">{{ 'home.title' | $t }}</a></li>
+            <li class="nav-link"><a [routerLink]="['/dashboard']">{{ 'dashboard.title' | $t }}</a></li>
+            <li class="nav-link"><a [routerLink]="['/recently-played']">{{ 'recentlyPlayedTracks.title' | $t }}</a></li>
+        </ul>
+        <ul class="nav--ul__two">
+            <ng-container *ngIf="user !== null; else login">
+                <li class="nav-link">{{ user.username }}</li>
+                <li class="nav-link pointer" (click)="logout()">{{ 'logout.title' | $t }}</li>
+            </ng-container>
+            <ng-template #login>
+                <li class="nav-link"><a [routerLink]="['/login']">{{ 'login.title' | $t }}</a></li>
+            </ng-template>
+        </ul>
+    </nav>
+    <span class="hamburger-menu material-symbols-outlined" (click)="toggle()">menu</span>
+</div>

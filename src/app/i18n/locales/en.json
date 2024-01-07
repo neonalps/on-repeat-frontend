@@ -1,0 +1,14 @@
+{
+    "filter": "Filter",
+    "home.title": "Home",
+    "loading": "Loading...",
+    "login.greeting": "Hello! Nice to see you 🎈",
+    "login.title": "Login",
+    "login.spotify": "Login with Spotify",
+    "logout.title": "Logout",
+    "dashboard.title": "Dashboard",
+    "recentlyPlayedTracks.title": "Recently played tracks",
+    "recentlyPlayedTracks.empty": "No played tracks recorded yet. Why don't you go and listen to some right now?",
+    "recentlyPlayedTracks.loadMore": "Load more tracks",
+    "reload": "Reload"
+}
