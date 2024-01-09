@@ -1,7 +1,8 @@
 {
     "connect.spotify": "Connect Spotify account",
     "connectedAccounts.empty": "There are no music accounts connected yet 😢",
-    "connectedAccounts.title": "Connected music accounts ♪",
+    "connectedAccounts.title": "Connected music accounts",
+    "delete": "Delete",
     "filter": "Filter",
     "home.title": "Home",
     "loading": "Loading...",

@@ -52,7 +52,7 @@ export class OauthSpotifyComponent implements OnInit {
 
     switch (contextType) {
       case "login":
-        const targetUrl: string | undefined = hasText(decodedState["targetUrl"] as any) ? decodedState["targetUrl"] as string : undefined;
+        const targetUrl: string | undefined = hasText(decodedState["target"] as any) ? decodedState["target"] as string : undefined;
         this.handleLogin(code, targetUrl);
         break;
 

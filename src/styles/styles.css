@@ -147,6 +147,10 @@ header {
     background-color: var(--spotify-lighter);
 }
 
+.bg-color-spotify-darker-20 {
+    background-color: var(--spotify-darker-20);
+}
+
 @media screen and (max-width: 700px) {
     .nav-container .logo {
         font-size: 1.2rem;

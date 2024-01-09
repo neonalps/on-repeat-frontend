@@ -12,16 +12,22 @@ import { LoadingComponent } from '@src/app/components/loading/loading.component'
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { AccountTokenApiDto, AuthUser, OAuthConfig, PaginatedResponseDto } from '@src/app/models';
 import { AppState } from '@src/app/store.index';
-import { hasText, isDefined } from '@src/app/util/common';
+import { isDefined } from '@src/app/util/common';
 import { first } from 'rxjs';
 import { environment } from '@src/environments/environment';
 import { OAuthContext } from '@src/app/oauth/spotify/oauth.spotify.component';
 import { encode } from '@src/app/util/base64';
+import { AccountTokenComponent } from '@src/app/components/account-token/account-token.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, I18nPipe, LoadingComponent],
+  imports: [
+    AccountTokenComponent,
+    CommonModule, 
+    I18nPipe, 
+    LoadingComponent
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
