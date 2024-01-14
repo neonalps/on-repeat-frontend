@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { AccountTokenApiDto } from '@src/app/models';
 import { DeleteComponent } from '@src/app/components/delete/delete.component';
@@ -13,6 +13,11 @@ import { DeleteComponent } from '@src/app/components/delete/delete.component';
 })
 export class AccountTokenComponent {
   @Input() accountToken!: AccountTokenApiDto;
+  @Output() onDelete = new EventEmitter<string>();
+
+  delete(): void {
+    this.onDelete.emit(this.accountToken.publicId);
+  }
 
   getProviderName(): string {
     return this.accountToken.provider;

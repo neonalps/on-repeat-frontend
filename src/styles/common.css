@@ -1,5 +1,9 @@
 @import "theme.css";
 
+.bg-color-primary {
+    background-color: var(--primary);
+}
+
 .bg-color-cyan-700 {
     background-color: rgb(14 116 144);
 }
@@ -48,13 +52,78 @@
     background-color: rgb(17 24 39);
 }
 
-.color-primary {
+.bg-color-purple-700 {
+    background-color: #704173;
+}
+
+.bg-color-purple-800 {
+    background-color: #502e53;
+}
+
+.border-primary {
+    border-color: var(--primary);
+}
+
+.border-warning {
+    border-color: var(--warning);
+}
+
+.border-b-solid {
+    border-bottom-style: solid;
+}
+
+.border-0 {
+    border-width: 0px;
+}
+
+.border-1 {
+    border-width: 1px;
+}
+
+.border-2 {
+    border-width: 2px;
+}
+
+.border-3 {
+    border-width: 3px;
+}
+
+.border-b-0 {
+    border-bottom-width: 0px;
+}
+
+.border-b-1 {
+    border-bottom-width: 1px;
+}
+
+.border-b-2 {
+    border-bottom-width: 2px;
+}
+
+.border-b-3 {
+    border-bottom-width: 3px;
+}
+
+.text-primary {
     color: var(--primary);
 }
 
-.color-primary-hover:hover {
+.text-primary-hover:hover {
     color: var(--primary);
     transition: color .2s ease-in;
+}
+
+.text-dark-grey {
+    color: var(--dark-grey);
+}
+
+
+.text-stone-700 {
+    color: rgb(68 64 60);
+}
+
+.text-warning {
+    color: var(--warning);
 }
 
 .bold {
@@ -305,10 +374,6 @@
     font-size: xx-small;
 }
 
-.text-stone-700 {
-    color: rgb(68 64 60);
-}
-
 .text-xs {
     font-size: .75rem;
     line-height: 1rem;
@@ -357,6 +422,12 @@
 
 .hide {
     display: none;
+}
+
+.hide-transition {
+    transition: opacity 200ms, display 200ms;
+    display: none;
+    opacity: 0;
 }
 
 .capitalize {
