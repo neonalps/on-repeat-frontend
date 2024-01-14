@@ -1,0 +1,19 @@
+<div class="modal-container">
+    <section class="modal p-12" >
+      <div class="flex justify-content-between border-b-2 border-b-solid mb-20" [ngClass]="getHeaderStyle()">
+        <div class="modal-header bold text-xl">
+          {{ getTitle() }}
+        </div>
+        <div>
+          <app-close [color]="getCancelIconColor()" (click)="close()" />
+        </div>
+      </div>
+      <div class="modal-content text-dark-grey text-lg mb-20">
+        {{ getContent() }}
+      </div>
+      <div class="modal-footer flex justify-content-center text-dark-grey">
+        <div class="button mr-16" role="button" [ngClass]="getCancelButtonStyle()" (click)="close()">{{ getCancelText() }}</div>
+        <div class="button" role="button" [ngClass]="getConfirmButtonStyle()" (click)="confirm()">{{ getConfirmText() }}</div>
+      </div>
+    </section>
+</div>

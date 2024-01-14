@@ -69,3 +69,15 @@ export interface MusicProviderApiDto {
     id: number;
     name: string;
 }
+
+export interface AccountTokenApiDto {
+    publicId: string;
+    provider: string;
+    scopes: string[];
+    createdAt: Date;
+}
+
+export interface CreateAccountTokenResponseDto {
+    success: boolean;
+    error?: string;
+}

@@ -1,0 +1,18 @@
+<div class="bg-color-primary p-12 rounded-lg">
+    <div class="flex justify-content-between">
+        <div class="capitalize text-xl bold mb-20">{{ getProviderName() }}</div>
+        <div>
+            <app-delete (click)="delete()" />
+        </div>
+    </div>
+
+    <div class="mb-20">
+        <div class="uppercase text-xs">{{ 'permissions' | $t }}</div>
+        <div><span class="inline-block p-6 mt-6 mr-8 bg-color-gray-200 text-stone-700 rounded-lg" *ngFor="let scope of getScopes()">{{ scope }}</span></div>
+    </div>
+
+    <div>
+        <div class="uppercase text-xs mb-6">{{ 'connectedOn' | $t }}</div>
+        <div>{{ getCreatedAt() | date }}</div>
+    </div>
+</div>

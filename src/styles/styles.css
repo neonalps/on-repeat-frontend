@@ -28,15 +28,6 @@ header {
     padding: .5rem 0;
 }
 
-.color-primary {
-    color: var(--primary);
-}
-
-.color-primary-hover:hover {
-    color: var(--primary);
-    transition: color .2s ease-in;
-}
-
 .nav-container {
     display: flex;
     align-items: center;
@@ -74,19 +65,23 @@ header {
 
 .title {
     font-weight: bold;
-    font-size: larger;
+    font-size: 1.5rem;
+    line-height: 2rem;
     margin-top: .75rem;
 }
 
-.page-content {
-    
+.section-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    margin-top: .75rem;
 }
 
 .content {
     padding: 1rem;
 }
 
-.button-primary {
+.button {
     display: inline-block;
     outline: none;
     cursor: pointer;
@@ -94,11 +89,14 @@ header {
     border-radius: 3px;
     padding: 12px 24px;
     border: 0;
-    color: var(--white);
-    background-color: var(--primary);
     line-height: 1.15;
     font-size: 16px;
     transition: all .2s ease-in;
+}
+
+.button-primary {
+    color: var(--white);
+    background-color: var(--primary);
 }
 
 .button-primary:hover {
@@ -107,23 +105,33 @@ header {
 }
 
 .button-secondary {
-    display: inline-block;
-    outline: none;
-    cursor: pointer;
-    font-weight: 600;
-    border-radius: 3px;
-    padding: 12px 24px;
-    border: 0;
     color: var(--primary);
     background-color: var(--white);
-    line-height: 1.15;
-    font-size: 16px;
-    transition: all .2s ease-in;
 }
 
 .button-secondary:hover {
     color: var(--white);
     background-color: var(--primary);
+}
+
+.button-warning-primary {
+    color: var(--white);
+    background-color: var(--warning);
+}
+
+.button-warning-primary:hover {
+    color: var(--warning);
+    background-color: var(--white);
+}
+
+.button-warning-secondary {
+    color: var(--warning);
+    background-color: var(--white);
+}
+
+.button-warning-secondary:hover {
+    color: var(--white);
+    background-color: var(--warning);
 }
 
 .spotify-button {
@@ -150,6 +158,10 @@ header {
 
 .spotify-button:hover {
     background-color: var(--spotify-lighter);
+}
+
+.bg-color-spotify-darker-20 {
+    background-color: var(--spotify-darker-20);
 }
 
 @media screen and (max-width: 700px) {

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@src/environments/environment';
 import { OAuthConfig } from '@src/app/models';
-import { generateRandomString } from '@src/app/util/common';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { ActivatedRoute } from '@angular/router';
+import { decode, encode } from '@src/app/util/base64';
+import { OAuthContext } from '@src/app/oauth/spotify/oauth.spotify.component';
+import { hasText } from '@src/app/util/common';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  private readonly STATE_LENGTH = 16;
   private postLoginRedirectState: string = "";
 
   constructor(private route: ActivatedRoute) { }
@@ -29,8 +30,13 @@ export class LoginComponent implements OnInit {
       throw new Error("Failed to read Spotify OAuth config");
     }
 
+    const context: OAuthContext = { type: 'login' };
+
+    const decodedState: Record<string, unknown> = hasText(this.postLoginRedirectState) ? JSON.parse(decode(this.postLoginRedirectState)) : {};
+    decodedState["context"] = context;
+
     const queryParams = {
-      state: this.postLoginRedirectState as string,
+      state: encode(JSON.stringify(decodedState)),
       response_type: "code",
       client_id: config.clientId,
       scope: "user-read-private user-read-email",

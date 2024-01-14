@@ -1,6 +1,8 @@
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const charactersLength = characters.length;
 
+export const API_QUERY_PARAM_NEXT_PAGE_KEY = "nextPageKey";
+
 export function generateRandomString(size: number): string {
     const result = [];
     for (let i = 0; i < size; i++ ) {
