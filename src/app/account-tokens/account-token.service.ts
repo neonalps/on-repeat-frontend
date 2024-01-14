@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, first } from 'rxjs';
 import { AccountTokenApiDto, CreateAccountTokenResponseDto, PaginatedResponseDto } from '@src/app/models';
 import { API_QUERY_PARAM_NEXT_PAGE_KEY, isDefined } from '@src/app/util/common';
 import { getHeaderWithAuthorization } from '@src/app/util/http';
@@ -36,5 +36,11 @@ export class AccountTokenService {
       code,
       createFetchRecentlyPlayedTracksJob: true,
     }, getHeaderWithAuthorization(accessToken));
+  }
+
+  deleteAccountToken(accessToken: string, accountTokenId: string) {
+    validateNotBlank(accountTokenId, "accountTokenId");
+
+    return this.http.delete(`${AccountTokenService.ACCOUNT_TOKEN_URL}/${accountTokenId}`, getHeaderWithAuthorization(accessToken));
   }
 }

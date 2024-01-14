@@ -14,7 +14,7 @@
                     <ng-template #loadedContent>
                         <ng-container *ngIf="accountTokens.length > 0; else emptyList">
                             <ng-container *ngFor="let accountToken of accountTokens">
-                                <app-account-token [accountToken]="accountToken" />
+                                <app-account-token [accountToken]="accountToken" (onDelete)="confirmAccountTokenDeletion($event)" />
                             </ng-container>
                         </ng-container>
                         <ng-template #emptyList>
