@@ -425,9 +425,15 @@
 }
 
 .hide-transition {
-    transition: opacity 200ms, display 200ms;
-    display: none;
+    visibility: hidden;
     opacity: 0;
+    transition: visibility 0.2s ease-in, opacity 0.15s ease-in;
+}
+
+.show-transition {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.2s ease-in, opacity 0.15s ease-in;
 }
 
 .capitalize {
