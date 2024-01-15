@@ -3,11 +3,6 @@ import { Component, Input } from '@angular/core';
 import { ImageApiDto, PlayedTrackApiDto } from '@src/app/models';
 import { ToggleCheckboxComponent } from '@src/app/toggle-checkbox/toggle-checkbox.component';
 
-interface ArtistLink {
-  id: number;
-  name: string;
-}
-
 @Component({
   selector: 'app-played-track',
   standalone: true,
@@ -19,14 +14,10 @@ export class PlayedTrackComponent {
 
   @Input() playedTrack!: PlayedTrackApiDto;
 
-  getArtists(): ArtistLink[] {
-    return this.playedTrack.track.artists.map(artist => {
-      return {
-        id: artist.id,
-        name: artist.name,
-      }
-    })
-    .reverse();
+  getArtists(): string {
+    return this.playedTrack.track.artists
+      .map(artist => artist.name)
+      .join(", ");
   }
 
   getTitle(): string {

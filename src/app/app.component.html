@@ -1,9 +1,11 @@
-<header class="header">
-  <app-nav />
-</header>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
-
-<app-modal [ngClass]="isModalActive() ? 'show-transition' : 'hide-transition'" />
+<div class="app-wrapper" [ngClass]="isMenuActive() ? '' : 'relative'">
+  <header class="header">
+    <app-nav />
+  </header>
+  
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  
+  <app-modal [ngClass]="isModalActive() ? 'show-transition' : 'hide-transition'" />
+</div>
