@@ -1,7 +1,7 @@
 <div class="nav-container">
     <span class="logo pointer flex align-items-center" (click)="goToHome()">
       <app-app-logo [width]="24" [top]="3" />
-      <span class="inline-block ml-12">on repeat</span>
+      <span class="inline-block ml-3">on repeat</span>
     </span>
     <nav class="nav" [ngClass]="{'active': (menuVisible$ | async) === true}">
         <ul class="nav--ul__one">
