@@ -2,7 +2,7 @@
     <section class="large-screen-placeholder"></section>
     <section class="content large-screen-main">
         <section class="page-content-header flex">
-            <div class="title flex-auto">{{ 'recentlyPlayedTracks.title' | $t }}</div>
+            <div class="title flex-auto mb-3">{{ 'recentlyPlayedTracks.title' | $t }}</div>
             <div class="flex-auto flex justify-content-flex-end pt-8">
                 <app-reload class="hide"></app-reload>
                 <app-filter class="hide"></app-filter>
@@ -12,7 +12,7 @@
             <ng-container *ngIf="playedTracksOnDate.length > 0; else emptyList">
                 <ng-container *ngFor="let playedTrackGroup of playedTracksOnDate">
                     <div>
-                        <div class="mt-16 pl-16 sticky top-0 z-10 sticky-header">
+                        <div class="sticky top-0 z-10 sticky-header">
                             <div class="relative bold">{{ playedTrackGroup.date | date }}</div>
                         </div>
                         <app-played-track *ngFor="let playedTrack of playedTrackGroup.tracks" [playedTrack]="playedTrack"/>
@@ -23,10 +23,10 @@
                 <button class="button-secondary" (click)="loadMore()">{{ 'recentlyPlayedTracks.loadMore' | $t }}</button>
             </div>
             <ng-container *ngIf="loading">
-                <div class="mt-32">{{ 'loading' | $t }}</div>
+                <div class="mt-8">{{ 'loading' | $t }}</div>
             </ng-container>
             <ng-template #emptyList>
-                <div class="mt-32">{{ 'recentlyPlayedTracks.empty' | $t }}</div>
+                <div class="mt-8">{{ 'recentlyPlayedTracks.empty' | $t }}</div>
             </ng-template>    
         </section>
     </section>
