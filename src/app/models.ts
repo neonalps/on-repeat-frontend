@@ -81,3 +81,51 @@ export interface CreateAccountTokenResponseDto {
     success: boolean;
     error?: string;
 }
+
+export type ChartApiItem = ChartTrackApiDto | ChartArtistApiDto;
+
+export interface BasicDashboardInformationApiDto {
+    charts: {
+        tracks: {
+            allTime: ChartApiDto<ChartTrackApiDto>,
+            current: ChartApiDto<ChartTrackApiDto>,
+        },
+        artists: {
+            allTime: ChartApiDto<ChartArtistApiDto>,
+            current: ChartApiDto<ChartArtistApiDto>,
+        },
+    },
+    stats: {
+        playedTracks: {
+            allTime: PlayedStatsApiDto,
+            current: PlayedStatsApiDto,
+        },
+    },
+}
+
+export interface ChartApiDto<T> {
+    type: string;
+    from?: Date;
+    to?: Date;
+    items: T[];
+}
+
+export interface ChartTrackApiDto {
+    position: number;
+    delta: number | null;
+    track: TrackApiDto;
+    timesPlayed: number;
+}
+
+export interface ChartArtistApiDto {
+    position: number;
+    delta: number | null;
+    artist: ArtistApiDto;
+    timesPlayed: number;
+}
+
+export interface PlayedStatsApiDto {
+    from?: Date;
+    to?: Date;
+    timesPlayed: number;
+}
