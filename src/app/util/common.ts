@@ -1,3 +1,5 @@
+import { ArtistApiDto } from "@src/app/models";
+
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const charactersLength = characters.length;
 
@@ -21,4 +23,12 @@ export function isNotDefined(toCheck: unknown): boolean {
 
 export function hasText(toCheck: string | null | undefined): boolean {
     return isDefined(toCheck) && (toCheck as string).trim().length > 0;
+}
+
+export function getArtistsString(artists: ArtistApiDto[]): string {
+    if (isNotDefined(artists)) {
+        return "";
+    }
+
+    return artists.map(artist => artist.name).join(", ");
 }

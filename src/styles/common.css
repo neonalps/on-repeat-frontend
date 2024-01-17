@@ -104,6 +104,10 @@
     border-bottom-style: solid;
 }
 
+.border-b-white {
+    border-bottom-color: var(--white);
+}
+
 .border-0 {
     border-width: 0px;
 }
@@ -168,6 +172,10 @@
 
 .flex {
     display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
 }
 
 .align-items-center {
@@ -627,6 +635,14 @@
     padding-top: 2rem;
 }
 
+.w-3\/4 {
+    width: 75%;
+}
+
+.w-full {
+    width: 100%;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -687,7 +703,11 @@
 
 .top-0 {
     top: 0;
-} 
+}
+
+.top-8 {
+    top: 8px;
+}
 
 .z-10 {
     z-index: 10;

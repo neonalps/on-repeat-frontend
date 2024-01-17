@@ -1,1 +1,65 @@
-<p>dashboard works!</p>
+<section class="page-content large-screen">
+    <section class="large-screen-placeholder"></section>
+    <section class="content large-screen-main">
+        <section class="page-content-header flex">
+            <div class="title flex-auto mb-3">{{ 'dashboard.title' | $t }}</div>
+        </section>
+        <section class="page-content-main">
+            <section class="w-full">
+                <div class="bg-color-dark-grey-lighter-10 p-2 rounded-lg">
+                    <div class="bold text-lg center">Your current favourites 🎸</div>
+                    <div>
+                        <div class="mt-3">
+                            <app-divider [text]="'tracks' | $t" />
+                        </div>
+                        <ng-container *ngIf="getCurrentTrackCharts().length > 0; else emptyList">
+                            <ng-container *ngFor="let chartItem of getCurrentTrackCharts()">
+                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" />
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #emptyList>Nothing</ng-template>
+                    </div>
+                    <div>
+                        <div class="mt-3">
+                            <app-divider [text]="'artists' | $t" />
+                        </div>
+                        <ng-container *ngIf="getCurrentArtistCharts().length > 0; else emptyList">
+                            <ng-container *ngFor="let chartItem of getCurrentArtistCharts()">
+                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" />
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #emptyList>Nothing</ng-template>
+                    </div>
+                </div>
+            </section>
+            <section class="mt-8 w-full">
+                <div class="bg-color-dark-grey-lighter-10 p-2 rounded-lg">
+                    <div class="bold text-lg center">Your all-time favourites ❤️</div>
+                    <div>
+                        <div class="mt-6">
+                            <app-divider [text]="'tracks' | $t" />
+                        </div>
+                        <ng-container *ngIf="getAllTimeTrackCharts().length > 0; else emptyList">
+                            <ng-container *ngFor="let chartItem of getAllTimeTrackCharts()">
+                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" />
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #emptyList>Nothing</ng-template>
+                    </div>
+                    <div>
+                        <div class="mt-6">
+                            <app-divider [text]="'artists' | $t" />
+                        </div>
+                        <ng-container *ngIf="getAllTimeArtistCharts().length > 0; else emptyList">
+                            <ng-container *ngFor="let chartItem of getAllTimeArtistCharts()">
+                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" />
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #emptyList>Nothing</ng-template>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+    <section class="large-screen-placeholder"></section>
+</section>
