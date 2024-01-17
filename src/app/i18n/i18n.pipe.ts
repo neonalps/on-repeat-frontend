@@ -9,7 +9,7 @@ export class I18nPipe implements PipeTransform {
 
   constructor(private readonly translationService: TranslationService) {}
 
-  transform(value: string, ...args: unknown[]): unknown {
+  transform(value: string, ...args: unknown[]): string {
     return this.translationService.translate(value);
   }
 

@@ -1,9 +1,11 @@
 {
+    "artists": "Artists",
     "cancel": "Cancel",
     "connect.spotify": "Connect Spotify account",
     "connectedAccounts.empty": "There are no music accounts connected yet 😢",
     "connectedAccounts.title": "Connected music accounts",
     "connectedOn": "Connected on",
+    "dashboard.title": "Dashboard",
     "delete": "Delete",
     "deleteAccountToken.content": "Are you sure you want to delete this account token? In this case your recently played tracks will no longer be synced from Spotify",
     "deleteAccountToken.title": "Delete account token",
@@ -14,12 +16,12 @@
     "login.title": "Login",
     "login.spotify": "Login with Spotify",
     "logout.title": "Logout",
-    "dashboard.title": "Dashboard",
     "permissions": "Permissions",
     "profile.title": "Profile",
     "recentlyPlayedTracks.title": "Recently played tracks",
     "recentlyPlayedTracks.empty": "No played tracks recorded yet. Why don't you go and listen to some right now?",
     "recentlyPlayedTracks.loadMore": "Load more tracks",
     "reload": "Reload",
-    "signed.in.as": "Signed in as"
+    "signed.in.as": "Signed in as",
+    "tracks": "Tracks"
 }

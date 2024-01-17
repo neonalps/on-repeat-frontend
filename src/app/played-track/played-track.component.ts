@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ImageApiDto, PlayedTrackApiDto } from '@src/app/models';
 import { ToggleCheckboxComponent } from '@src/app/toggle-checkbox/toggle-checkbox.component';
+import { getArtistsString } from '@src/app/util/common';
 
 @Component({
   selector: 'app-played-track',
@@ -15,9 +16,7 @@ export class PlayedTrackComponent {
   @Input() playedTrack!: PlayedTrackApiDto;
 
   getArtists(): string {
-    return this.playedTrack.track.artists
-      .map(artist => artist.name)
-      .join(", ");
+    return getArtistsString(this.playedTrack.track.artists);
   }
 
   getTitle(): string {
