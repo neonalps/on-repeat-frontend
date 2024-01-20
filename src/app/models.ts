@@ -4,7 +4,8 @@ export interface AuthUser {
     email: string;
     accessToken: string;
     accessTokenExpiresAt: Date;
-    refreshToken: string | null;
+    refreshToken: string;
+    refreshTokenExpiresAt: Date;
 }
 
 export interface OAuthConfig {
@@ -21,6 +22,7 @@ export interface LoginResponseDto {
     }
     token: {
         accessToken: string;
+        refreshToken: string;
     }
 }
 
