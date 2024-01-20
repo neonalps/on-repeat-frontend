@@ -68,9 +68,12 @@ export class OauthSpotifyComponent implements OnInit {
       .subscribe({
         next: authResponse => {
           const accessToken = authResponse.token.accessToken;
-          const tokenPayload = parseJwt(accessToken);
+          const accessTokenPayload = parseJwt(accessToken);
+          const accessTokenExpiresAtUnix: number = accessTokenPayload["exp"];
 
-          const accessTokenExpiresAtUnix: number = tokenPayload["exp"];
+          const refreshToken = authResponse.token.refreshToken;
+          const refreshTokenPayload = parseJwt(refreshToken);
+          const refreshTokenExpiresAtUnix: number = refreshTokenPayload["exp"];
 
           const authState: AuthState = {
             isLoggedIn: true,
@@ -78,9 +81,10 @@ export class OauthSpotifyComponent implements OnInit {
               userId: authResponse.identity.publicId,
               username: authResponse.identity.displayName,
               email: authResponse.identity.email,
-              accessToken: accessToken,
+              accessToken,
               accessTokenExpiresAt: getDateFromUnixTimestamp(accessTokenExpiresAtUnix),
-              refreshToken: null,
+              refreshToken,
+              refreshTokenExpiresAt: getDateFromUnixTimestamp(refreshTokenExpiresAtUnix),
             },
           };
 
