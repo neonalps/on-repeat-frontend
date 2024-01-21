@@ -2,11 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AccountTokenService } from '@src/app/account-tokens/account-token.service';
-import { AuthService } from '@src/app/auth/auth.service';
-import { loginRedirect } from '@src/app/auth/guards/loggedin.guard';
 import { selectAuthUser } from '@src/app/auth/store/auth.selectors';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
@@ -39,10 +36,8 @@ export class ProfileComponent {
   username: string | null = null;
 
   constructor(
-    private readonly authService: AuthService,
     private readonly accountTokenService: AccountTokenService,
     private readonly modalService: ModalService,
-    private readonly router: Router,
     private readonly store: Store<AppState>,
     private readonly translationService: TranslationService,
   ) {
@@ -96,19 +91,14 @@ export class ProfileComponent {
   handleDeleteAccountToken(accountTokenId: string): void {
     this.loading = true;
 
-    this.accountTokenService.deleteAccountToken(this.authService.getAccessToken() as string, accountTokenId)
+    this.accountTokenService.deleteAccountToken(accountTokenId)
       .pipe(first())
       .subscribe({
         next: () => {
           this.loadAccountTokens();
         },
         error: (error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            loginRedirect(this.router, this.router.url);
-            return;
-          }
-
-          // TODO show error toast
+          console.error(error);
           this.loading = false;
         }
       })
@@ -117,7 +107,7 @@ export class ProfileComponent {
   private loadAccountTokens(): void {
     this.loading = true;
 
-    this.accountTokenService.fetchAccountTokens(this.authService.getAccessToken() as string)
+    this.accountTokenService.fetchAccountTokens()
       .pipe(first())
       .subscribe({
         next: (response: PaginatedResponseDto<AccountTokenApiDto>) => {
@@ -125,11 +115,7 @@ export class ProfileComponent {
           this.loading = false;
         },
         error: (error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            loginRedirect(this.router, this.router.url);
-            return;
-          }
-
+          console.error(error);
           this.loading = false;
         } 
       });

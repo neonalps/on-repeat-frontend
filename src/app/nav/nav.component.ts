@@ -8,9 +8,9 @@ import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { selectAuthUser } from '@src/app/auth/store/auth.selectors';
 import { AuthUser } from '@src/app/models';
-import { logout } from '@src/app/auth/store/auth.actions';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
+import { AuthService } from '@src/app/auth/auth.service';
 
 @Component({
   selector: 'app-nav',
@@ -29,7 +29,7 @@ export class NavComponent {
   menuVisible$ = this.store.select(selectMenuVisible);
   user: AuthUser | null = null;
 
-  constructor(private readonly router: Router, private readonly store: Store<AppState>) {
+  constructor(private readonly authService: AuthService, private readonly router: Router, private readonly store: Store<AppState>) {
     this.store.select(selectAuthUser)
       .pipe(takeUntilDestroyed())
       .subscribe(value => {
@@ -54,14 +54,12 @@ export class NavComponent {
   }
 
   logout() {
-    this.store.dispatch(logout());
     this.toggle();
-    this.goToHome();
+    this.authService.signOut();
   }
 
   toggle() {
     this.store.dispatch(toggleMenu());
   }
-
 
 }

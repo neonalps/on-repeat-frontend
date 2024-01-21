@@ -1,13 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { AuthService } from '@src/app/auth/auth.service';
-import { login } from '@src/app/auth/store/auth.actions';
-import { AuthState } from '@src/app/auth/store/auth.selectors';
 import { hasText, isDefined } from '@src/app/util/common';
-import { parseJwt } from '@src/app/util/token';
-import { getDateFromUnixTimestamp } from '@src/app/util/date';
 import { first } from 'rxjs';
 import { decode } from '@src/app/util/base64';
 import { AccountTokenService } from '@src/app/account-tokens/account-token.service';
@@ -23,8 +18,7 @@ export class OauthSpotifyComponent implements OnInit {
   constructor(
     private readonly accountTokenService: AccountTokenService,
     private readonly authService: AuthService, 
-    private readonly router: Router, 
-    private readonly store: Store
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +40,7 @@ export class OauthSpotifyComponent implements OnInit {
     }
 
     const contextType: string = (decodedState["context"] as OAuthContext).type;
-    if (["login", "accountToken"].indexOf(contextType) < 0) {
+    if (!hasText(contextType) || ["login", "accountToken"].indexOf(contextType) < 0) {
       throw new Error(`Illegal context type value ${contextType}`);
     }
 
@@ -66,30 +60,8 @@ export class OauthSpotifyComponent implements OnInit {
     this.authService.handleOAuthLogin("spotify", code)
       .pipe(first())
       .subscribe({
-        next: authResponse => {
-          const accessToken = authResponse.token.accessToken;
-          const accessTokenPayload = parseJwt(accessToken);
-          const accessTokenExpiresAtUnix: number = accessTokenPayload["exp"];
-
-          const refreshToken = authResponse.token.refreshToken;
-          const refreshTokenPayload = parseJwt(refreshToken);
-          const refreshTokenExpiresAtUnix: number = refreshTokenPayload["exp"];
-
-          const authState: AuthState = {
-            isLoggedIn: true,
-            auth: {
-              userId: authResponse.identity.publicId,
-              username: authResponse.identity.displayName,
-              email: authResponse.identity.email,
-              accessToken,
-              accessTokenExpiresAt: getDateFromUnixTimestamp(accessTokenExpiresAtUnix),
-              refreshToken,
-              refreshTokenExpiresAt: getDateFromUnixTimestamp(refreshTokenExpiresAtUnix),
-            },
-          };
-
-          this.store.dispatch(login({ auth: authState }));
-          setTimeout(() => this.router.navigate([isDefined(targetUrl) ? targetUrl : "/"]), 100);
+        next: _ => {
+          setTimeout(() => this.router.navigate([isDefined(targetUrl) ? targetUrl : "/"]));
         },
         error: error => {
           console.error(error);
@@ -98,7 +70,7 @@ export class OauthSpotifyComponent implements OnInit {
   }
 
   private handleAccountToken(code: string): void {
-    this.accountTokenService.createAccountToken(this.authService.getAccessToken() as string, "spotify", code)
+    this.accountTokenService.createAccountToken("spotify", code)
       .pipe(first())
       .subscribe({
         next: _ => {

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { PlayedTracksService } from '@src/app/played-tracks/played-tracks.service';
 import { PaginatedResponseDto, PlayedTrackApiDto } from '@src/app/models';
 import { first } from 'rxjs';
-import { AuthService } from '@src/app/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { PlayedTrackComponent } from '@src/app/played-track/played-track.component';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
@@ -13,8 +12,6 @@ import { ScrollNearEndDirective } from '@src/app/directives/scroll-near-end/scro
 import { ReloadComponent } from '@src/app/reload/reload.component';
 import { FilterComponent } from '@src/app/filter/filter.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { loginRedirect } from '@src/app/auth/guards/loggedin.guard';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recently-played',
@@ -37,11 +34,7 @@ export class RecentlyPlayedComponent {
   
   private nextPageKey: string | null = null;
 
-  constructor(
-      private readonly authService: AuthService, 
-      private readonly playedTracksService: PlayedTracksService,
-      private readonly router: Router,
-  ) {
+  constructor(private readonly playedTracksService: PlayedTracksService) {
     this.loadRecentlyPlayedTracks();
   }
 
@@ -64,7 +57,7 @@ export class RecentlyPlayedComponent {
   private loadRecentlyPlayedTracks(nextPageKey?: string): void {
     this.loading = true;
 
-    this.playedTracksService.fetchRecentlyPlayedTracks(this.authService.getAccessToken() as string, nextPageKey)
+    this.playedTracksService.fetchRecentlyPlayedTracks(nextPageKey)
       .pipe(first())
       .subscribe({
         next: (response: PaginatedResponseDto<PlayedTrackApiDto>) => {
@@ -73,11 +66,7 @@ export class RecentlyPlayedComponent {
           this.loading = false;
         },
         error: (error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            loginRedirect(this.router, this.router.url);
-            return;
-          }
-
+          console.error(error);
           this.loading = false;
         } 
       });

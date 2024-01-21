@@ -20,3 +20,7 @@ export function getGroupableDateString(input: Date): string {
 
     return `${dateWithoutTime.getFullYear()}-${paddedMonth}-${paddedDay}`;
 }
+
+export function getNow(): Date {
+    return new Date();
+}

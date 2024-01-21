@@ -1,14 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment';
-import { Observable, first } from 'rxjs';
-import { AuthUser, BasicDashboardInformationApiDto, ChartApiDto, ChartApiItem } from '@src/app/models';
-import { getHeaderWithAuthorization } from '@src/app/util/http';
-import { Store } from '@ngrx/store';
-import { AppState } from '@src/app/store.index';
-import { selectAuthUser } from '@src/app/auth/store/auth.selectors';
-import { isDefined, isNotDefined } from '@src/app/util/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, take } from 'rxjs';
+import { BasicDashboardInformationApiDto, ChartApiDto, ChartApiItem } from '@src/app/models';
+import { isNotDefined } from '@src/app/util/common';
 
 @Injectable({
   providedIn: 'root'
@@ -19,20 +14,17 @@ export class DashboardService {
 
   private basicDashboard: BasicDashboardInformationApiDto | null = null;
 
-  constructor(private readonly http: HttpClient, private readonly store: Store<AppState>) {
-    this.store.select(selectAuthUser)
-      .pipe(takeUntilDestroyed())
-      .subscribe(auth => {
-        if (isDefined(auth)) {
-          this.fetchBasicDashboard((auth as AuthUser).accessToken)
-            .pipe(first())
-            .subscribe(response => {
-              this.basicDashboard = response;
-              console.log('got dashboard')
-            });
-        } else {
-          this.basicDashboard = null;
-        }
+  constructor(private readonly http: HttpClient) {}
+
+  load(): void {
+    if (this.basicDashboard !== null) {
+      return;
+    }
+
+    this.fetchBasicDashboard()
+      .pipe(take(1))
+      .subscribe(dashboard => {
+        this.basicDashboard = dashboard;
       });
   }
 
@@ -68,7 +60,7 @@ export class DashboardService {
     return (this.basicDashboard as BasicDashboardInformationApiDto).charts.artists.allTime;
   }
 
-  private fetchBasicDashboard(accessToken: string): Observable<BasicDashboardInformationApiDto> {
-    return this.http.get<BasicDashboardInformationApiDto>(DashboardService.BASIC_DASHBOARD_URL, getHeaderWithAuthorization(accessToken));
+  private fetchBasicDashboard(): Observable<BasicDashboardInformationApiDto> {
+    return this.http.get<BasicDashboardInformationApiDto>(DashboardService.BASIC_DASHBOARD_URL);
   }
 }
