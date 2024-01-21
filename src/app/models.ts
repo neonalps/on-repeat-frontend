@@ -133,3 +133,23 @@ export interface PlayedStatsApiDto {
     to?: Date;
     timesPlayed: number;
 }
+
+export interface DetailedTrackApiDto {
+    id: number;
+    name: string;
+    artists: ArtistApiDto[];
+    album: AlbumApiDto | null;
+    playedInfo: PlayedInfoApiDto;
+    externalUrls: Record<string, string>;
+    explicit: boolean | null;
+    isrc: string | null;
+    discNumber: number | null;
+    trackNumber: number | null;
+    durationMs: number | null;
+}
+
+export interface PlayedInfoApiDto {
+    firstPlayedAt: Date | null;
+    lastPlayedAt: Date | null;
+    timesPlayed: number;
+}

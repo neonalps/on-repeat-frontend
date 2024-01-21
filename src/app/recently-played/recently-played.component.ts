@@ -12,6 +12,8 @@ import { ScrollNearEndDirective } from '@src/app/directives/scroll-near-end/scro
 import { ReloadComponent } from '@src/app/reload/reload.component';
 import { FilterComponent } from '@src/app/filter/filter.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { navigateToTrackDetails } from '@src/app/util/router';
 
 @Component({
   selector: 'app-recently-played',
@@ -34,7 +36,7 @@ export class RecentlyPlayedComponent {
   
   private nextPageKey: string | null = null;
 
-  constructor(private readonly playedTracksService: PlayedTracksService) {
+  constructor(private readonly router: Router, private readonly playedTracksService: PlayedTracksService) {
     this.loadRecentlyPlayedTracks();
   }
 
@@ -52,6 +54,10 @@ export class RecentlyPlayedComponent {
 
   onNearEndScroll(): void {
     this.loadMore();
+  }
+
+  goToTrack(id: number): void {
+    navigateToTrackDetails(this.router, id);
   }
 
   private loadRecentlyPlayedTracks(nextPageKey?: string): void {
