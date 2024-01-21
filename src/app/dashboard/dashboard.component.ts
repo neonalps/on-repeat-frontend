@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '@src/app/dashboard/dashboard.service';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
@@ -22,9 +22,13 @@ import { convertChartArtistApiDtoToChartItem, convertChartTrackApiDtoToChartItem
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
 
   constructor(private readonly dashboardService: DashboardService) {}
+
+  ngOnInit(): void {
+    this.dashboardService.load();
+  }
 
   isLoading(): boolean {
     return this.dashboardService.getCurrentTrackCharts() !== null;

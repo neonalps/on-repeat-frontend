@@ -3,9 +3,9 @@ export interface AuthUser {
     username: string | null;
     email: string;
     accessToken: string;
-    accessTokenExpiresAt: Date;
+    accessTokenExpiresAt: string;
     refreshToken: string;
-    refreshTokenExpiresAt: Date;
+    refreshTokenExpiresAt: string;
 }
 
 export interface OAuthConfig {
@@ -14,16 +14,18 @@ export interface OAuthConfig {
     redirectUri: string;
 }
 
+export interface TokenResponseDto {
+    accessToken: string;
+    refreshToken: string;
+}
+
 export interface LoginResponseDto {
     identity: {
         displayName: string | null;
         email: string;
         publicId: string;
     }
-    token: {
-        accessToken: string;
-        refreshToken: string;
-    }
+    token: TokenResponseDto,
 }
 
 export interface PaginatedResponseDto<T> {
