@@ -1,4 +1,4 @@
-import { ArtistApiDto } from "@src/app/models";
+import { ArtistApiDto, ImageApiDto } from "@src/app/models";
 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const charactersLength = characters.length;
@@ -31,4 +31,37 @@ export function getArtistsString(artists: ArtistApiDto[]): string {
     }
 
     return artists.map(artist => artist.name).join(", ");
+}
+
+export type ImageSize = 'small' | 'medium' | 'large';
+export function pickImageFromArray(images: ImageApiDto[] | undefined, mode: ImageSize): ImageApiDto | null {
+    if (isNotDefined(images) || (images as ImageApiDto[]).length === 0) {
+        return null;
+    }
+
+    const sortedByLargestSize = (images as ImageApiDto[]).sort((a: ImageApiDto, b: ImageApiDto) => {
+        const sizeA = a.height;
+        const sizeB = b.height;
+
+        if (sizeA > sizeB) {
+            return -1;
+        } else if (sizeB > sizeA) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+
+    const itemIdx = determineItemIdx(mode, sortedByLargestSize.length);
+    return sortedByLargestSize[itemIdx];
+}
+
+function determineItemIdx(mode: ImageSize, arraySize: number): number {
+    if (mode === 'large') {
+        return 0;
+    } else if (mode === 'small') {
+        return arraySize - 1;
+    } else {
+        return Math.floor(arraySize / 2);
+    }
 }

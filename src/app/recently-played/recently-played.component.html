@@ -15,7 +15,7 @@
                         <div class="sticky top-0 z-10 sticky-header">
                             <div class="relative bold">{{ playedTrackGroup.date | date }}</div>
                         </div>
-                        <app-played-track *ngFor="let playedTrack of playedTrackGroup.tracks" [playedTrack]="playedTrack"/>
+                        <app-played-track *ngFor="let playedTrack of playedTrackGroup.tracks" [playedTrack]="playedTrack" (click)="goToTrack(playedTrack.track.id)" />
                     </div>
                 </ng-container>
             </ng-container>
