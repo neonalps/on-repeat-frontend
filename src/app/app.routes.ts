@@ -5,6 +5,8 @@ import { DashboardComponent } from '@src/app/dashboard/dashboard.component';
 import { loggedInGuard } from '@src/app/auth/guards/loggedin.guard';
 import { RecentlyPlayedComponent } from '@src/app/recently-played/recently-played.component';
 import { ProfileComponent } from '@src/app/pages/profile/profile.component';
+import { TrackDetailsComponent } from '@src/app/pages/track-details/track-details.component';
+import { PATH_PARAM_TRACK_ID } from './util/router';
 
 export const routes: Routes = [
     { 
@@ -28,6 +30,11 @@ export const routes: Routes = [
     { 
         path: 'recently-played', 
         component: RecentlyPlayedComponent,
+        canActivate: [loggedInGuard],
+    },
+    { 
+        path: `tracks/:${PATH_PARAM_TRACK_ID}`, 
+        component: TrackDetailsComponent,
         canActivate: [loggedInGuard],
     },
 ];
