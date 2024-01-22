@@ -173,7 +173,6 @@
     color: var(--dark-grey);
 }
 
-
 .text-stone-700 {
     color: rgb(68 64 60);
 }
@@ -198,8 +197,16 @@
     flex-direction: column;
 }
 
+.align-items-start {
+    align-items: flex-start;
+}
+
 .align-items-center {
     align-items: center;
+}
+
+.align-self-start {
+    align-self: flex-start;
 }
 
 .align-self-center {
