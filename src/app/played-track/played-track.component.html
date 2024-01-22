@@ -9,7 +9,7 @@
         </div>
         <div class="mt-1"><a>{{ getTitle() }}</a></div>
     </div>
-    <div class="flex-auto flex justify-content-center align-self-center">
-        <app-toggle-checkbox class="hide" />
+    <div class="flex-auto">
+        <app-exclude *ngIf="isExcludedFromStatistics()" />
     </div>
 </div>

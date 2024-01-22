@@ -9,6 +9,7 @@
     "delete": "Delete",
     "deleteAccountToken.content": "Are you sure you want to delete this account token? In this case your recently played tracks will no longer be synced from Spotify",
     "deleteAccountToken.title": "Delete account token",
+    "excludeFromStatistics": "Exclude from statistics",
     "filter": "Filter",
     "home.title": "Home",
     "loading": "Loading...",
