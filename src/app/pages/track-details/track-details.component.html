@@ -16,7 +16,7 @@
                         <div class="text-sm mt-3">{{ getAlbum() }}</div>
                     </div>
                 </section>
-                <section class="mt-8 flex bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
+                <section class="mt-6 flex bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
                     <div class="flex-auto align-self-center">
                         <div class="border-r-1 border-r-solid border-r-white">
                             <div class="bold text-md center">{{ getTimesPlayed() }}</div>
@@ -35,6 +35,22 @@
                             <div class="uppercase text-xs mt-2 center">{{ 'played.last' | $t }}</div>
                         </div>
                     </div>
+                </section>
+                <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
+                    <div class="bold text-md pl-1 mb-4">Played history</div>
+                    <ng-container *ngIf="isTrackHistoryLoading; else loadedHistory">
+                        <app-loading />
+                    </ng-container>
+                    <ng-template #loadedHistory>
+                        <div>
+                            <div *ngFor="let entry of trackHistory" class="bg-color-dark-grey-lighter-20 rounded p-2 mt-2 flex justify-content-between">
+                                <div>{{ entry.playedAt | date:'medium' }}</div>
+                                <div class="mr-2">
+                                    <app-toggle-checkbox [title]="'includeInStatistics' | $t" [checked]="entry.includeInStatistics" />
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
                 </section>
             </section>
         </ng-template>

@@ -10,7 +10,7 @@ import { AuthState, selectAuthUser } from '@src/app/auth/store/auth.selectors';
 import { AppState } from '@src/app/store.index';
 import { SessionStorageService } from '@src/app/storage/session-storage.service';
 import { hasText, isDefined } from '@src/app/util/common';
-import { login, logout } from '@src/app/auth/store/auth.actions';
+import { UpdateAuthTokensAction, login, logout, updateAuthTokens } from '@src/app/auth/store/auth.actions';
 import { parseJwt } from '@src/app/util/token';
 import { getDateFromUnixTimestamp } from '../util/date';
 import { Router } from '@angular/router';
@@ -24,6 +24,8 @@ export class AuthService {
   public static readonly REFRESH_TOKEN_URL =`${environment.apiBaseUrl}/api/v1/oauth/refresh-token`;
 
   private static readonly SESSION_STORAGE_KEY_AUTH = "currentAuth";
+
+  private static readonly TOKEN_KEY_EXP = "exp";
 
   private user: AuthUser | null = null;
   
@@ -68,27 +70,27 @@ export class AuthService {
     }).pipe(
       tap((authResponse: LoginResponseDto) => {
         const accessToken = authResponse.token.accessToken;
-          const accessTokenPayload = parseJwt(accessToken);
-          const accessTokenExpiresAtUnix: number = accessTokenPayload["exp"];
+        const accessTokenPayload = parseJwt(accessToken);
+        const accessTokenExpiresAtUnix: number = accessTokenPayload[AuthService.TOKEN_KEY_EXP];
 
-          const refreshToken = authResponse.token.refreshToken;
-          const refreshTokenPayload = parseJwt(refreshToken);
-          const refreshTokenExpiresAtUnix: number = refreshTokenPayload["exp"];
+        const refreshToken = authResponse.token.refreshToken;
+        const refreshTokenPayload = parseJwt(refreshToken);
+        const refreshTokenExpiresAtUnix: number = refreshTokenPayload[AuthService.TOKEN_KEY_EXP];
 
-          const authState: AuthState = {
-            isLoggedIn: true,
-            auth: {
-              userId: authResponse.identity.publicId,
-              username: authResponse.identity.displayName,
-              email: authResponse.identity.email,
-              accessToken,
-              accessTokenExpiresAt: getDateFromUnixTimestamp(accessTokenExpiresAtUnix).toISOString(),
-              refreshToken,
-              refreshTokenExpiresAt: getDateFromUnixTimestamp(refreshTokenExpiresAtUnix).toISOString(),
-            },
-          };
+        const authState: AuthState = {
+          isLoggedIn: true,
+          auth: {
+            userId: authResponse.identity.publicId,
+            username: authResponse.identity.displayName,
+            email: authResponse.identity.email,
+            accessToken,
+            accessTokenExpiresAt: getDateFromUnixTimestamp(accessTokenExpiresAtUnix).toISOString(),
+            refreshToken,
+            refreshTokenExpiresAt: getDateFromUnixTimestamp(refreshTokenExpiresAtUnix).toISOString(),
+          },
+        };
 
-          this.store.dispatch(login({ auth: authState }));
+        this.store.dispatch(login({ auth: authState }));
       })
     );
   }
@@ -98,7 +100,26 @@ export class AuthService {
 
     return this.http.post<TokenResponseDto>(AuthService.REFRESH_TOKEN_URL, {
       refreshToken,
-    });
+    }).pipe(
+      tap((tokenResponse: TokenResponseDto) => {
+        const accessToken = tokenResponse.accessToken;
+        const accessTokenPayload = parseJwt(accessToken);
+        const accessTokenExpiresAtUnix: number = accessTokenPayload[AuthService.TOKEN_KEY_EXP];
+
+        const refreshToken = tokenResponse.refreshToken;
+        const refreshTokenPayload = parseJwt(refreshToken);
+        const refreshTokenExpiresAtUnix: number = refreshTokenPayload[AuthService.TOKEN_KEY_EXP];
+
+        const action: UpdateAuthTokensAction = {
+          accessToken,
+          accessTokenExpiresAt: getDateFromUnixTimestamp(accessTokenExpiresAtUnix).toISOString(),
+          refreshToken,
+          refreshTokenExpiresAt: getDateFromUnixTimestamp(refreshTokenExpiresAtUnix).toISOString(),
+        };
+        
+        this.store.dispatch(updateAuthTokens(action));
+      })
+    );
   }
 
   public signOut(): void {
