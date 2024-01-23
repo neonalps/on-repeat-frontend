@@ -12,6 +12,7 @@
     "excludeFromStatistics": "Exclude from statistics",
     "filter": "Filter",
     "home.title": "Home",
+    "includeInStatistics": "Include in statistics",
     "loading": "Loading...",
     "login.greeting": "Hello! Nice to see you 🎈",
     "login.title": "Login",

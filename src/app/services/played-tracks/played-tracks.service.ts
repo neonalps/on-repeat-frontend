@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment';
-import { PaginatedResponseDto, PlayedTrackApiDto } from '@src/app/models';
+import { PaginatedResponseDto, PlayedHistoryApiDto, PlayedTrackApiDto } from '@src/app/models';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { API_QUERY_PARAM_NEXT_PAGE_KEY, hasText, isDefined } from '@src/app/util/common';
 import { getGroupableDateString } from '@src/app/util/date';
@@ -42,6 +42,16 @@ export class PlayedTracksService {
 
   areMoreRecentlyPlayedTracksAvailable(): boolean {
     return hasText(this.nextPageKey);
+  }
+
+  fetchTrackPlayedHistory(trackId: number, trackNextPageKey?: string): Observable<PaginatedResponseDto<PlayedHistoryApiDto>> {
+    const queryParams = new URLSearchParams();
+    if (hasText(trackNextPageKey)) {
+      queryParams.set(API_QUERY_PARAM_NEXT_PAGE_KEY, trackNextPageKey as string);
+    }
+
+    const requestUrl = `${PlayedTracksService.PLAYED_TRACKS_URL}/tracks/${trackId}?${queryParams.toString()}`;
+    return this.http.get<PaginatedResponseDto<PlayedHistoryApiDto>>(requestUrl);
   }
 
   private fetchRecentlyPlayedTracks(): Observable<PaginatedResponseDto<PlayedTrackApiDto>> {
