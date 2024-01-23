@@ -153,3 +153,10 @@ export interface PlayedInfoApiDto {
     lastPlayedAt: Date | null;
     timesPlayed: number;
 }
+
+export interface PlayedHistoryApiDto {
+    playedTrackId: number;
+    playedAt: Date;
+    musicProvider: MusicProviderApiDto;
+    includeInStatistics: boolean;
+}
