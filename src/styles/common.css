@@ -164,7 +164,7 @@
     color: var(--primary);
 }
 
-.text-primary-hover:hover {
+.hover\:text-primary:hover {
     color: var(--primary);
     transition: color .2s ease-in;
 }

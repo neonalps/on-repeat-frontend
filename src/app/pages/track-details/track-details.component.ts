@@ -1,20 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { ToggleCheckboxComponent } from '@src/app/components/toggle-checkbox/toggle-checkbox.component';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { DetailedTrackApiDto, ImageApiDto, PlayedHistoryApiDto } from '@src/app/models';
-import { PlayedTracksService } from '@src/app/services/played-tracks/played-tracks.service';
+import { PlayedTrackService } from '@src/app/services/played-track/played-track.service';
 import { TrackService } from '@src/app/services/track/track.service';
-import { getArtistsString, hasText, isNotDefined, pickImageFromArray } from '@src/app/util/common';
-import { PATH_PARAM_TRACK_ID } from '@src/app/util/router';
+import { hasText, isNotDefined, pickImageFromArray } from '@src/app/util/common';
+import { PATH_PARAM_TRACK_ID, navigateToArtistDetails } from '@src/app/util/router';
 import { take } from 'rxjs';
+
+interface SimpleArtist {
+  id: number;
+  name: string;
+  href: string;
+}
 
 @Component({
   selector: 'app-track-details',
   standalone: true,
-  imports: [CommonModule, I18nPipe, LoadingComponent, ToggleCheckboxComponent],
+  imports: [
+    CommonModule, 
+    I18nPipe, 
+    LoadingComponent, 
+    ToggleCheckboxComponent,
+  ],
   templateUrl: './track-details.component.html',
   styleUrl: './track-details.component.css'
 })
@@ -27,7 +38,12 @@ export class TrackDetailsComponent implements OnInit {
   private track!: DetailedTrackApiDto;
   private trackHistoryNextPageKey: string | null = null;
 
-  constructor(private route: ActivatedRoute, private trackService: TrackService, private playedTrackService: PlayedTracksService) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly trackService: TrackService, 
+    private readonly playedTrackService: PlayedTrackService
+  ) {}
 
   ngOnInit(): void {
     const trackId = Number(this.route.snapshot.paramMap.get(PATH_PARAM_TRACK_ID));
@@ -72,8 +88,14 @@ export class TrackDetailsComponent implements OnInit {
     return this.track.name;
   }
 
-  getArtists(): string {
-    return getArtistsString(this.track.artists);
+  getArtists(): SimpleArtist[] {
+    return this.track.artists.map(artist => {
+      return {
+        id: artist.id,
+        name: artist.name,
+        href: artist.href,
+      }
+    });
   }
 
   getAlbum(): string | undefined {
@@ -90,5 +112,9 @@ export class TrackDetailsComponent implements OnInit {
 
   getLastPlayedAt(): Date | null {
     return this.track.playedInfo.lastPlayedAt;
+  }
+
+  goToArtist(artistId: number): void {
+    navigateToArtistDetails(this.router, artistId);
   }
 }

@@ -9,8 +9,8 @@ import { FilterComponent } from '@src/app/filter/filter.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { navigateToTrackDetails } from '@src/app/util/router';
-import { PlayedTracksOnDate, PlayedTracksService } from '@src/app/services/played-tracks/played-tracks.service';
-import { isDefined } from '../util/common';
+import { PlayedTracksOnDate, PlayedTrackService } from '@src/app/services/played-track/played-track.service';
+import { isDefined } from '@src/app/util/common';
 
 @Component({
   selector: 'app-recently-played',
@@ -31,8 +31,8 @@ export class RecentlyPlayedComponent {
   loading: boolean = false;
   playedTracksOnDate: PlayedTracksOnDate[] = [];
 
-  constructor(private readonly router: Router, private readonly playedTracksService: PlayedTracksService) {
-    const loadedPlayedTracks = this.playedTracksService.getRecentlyPlayedTracks();
+  constructor(private readonly router: Router, private readonly playedTrackService: PlayedTrackService) {
+    const loadedPlayedTracks = this.playedTrackService.getRecentlyPlayedTracks();
     if (isDefined(loadedPlayedTracks) && loadedPlayedTracks.length > 0) {
       this.playedTracksOnDate = loadedPlayedTracks;
     } else {
@@ -49,7 +49,7 @@ export class RecentlyPlayedComponent {
   }
 
   isLoadMoreAvailable(): boolean {
-    return !this.loading && this.playedTracksService.areMoreRecentlyPlayedTracksAvailable();
+    return !this.loading && this.playedTrackService.areMoreRecentlyPlayedTracksAvailable();
   }
 
   onNearEndScroll(): void {
@@ -63,7 +63,7 @@ export class RecentlyPlayedComponent {
   private loadRecentlyPlayedTracks(): void {
     this.loading = true;
 
-    this.playedTracksService.loadRecentlyPlayedTracks()
+    this.playedTrackService.loadRecentlyPlayedTracks()
       .pipe(take(1))
       .subscribe({
         next: (tracks: PlayedTracksOnDate[]) => {
