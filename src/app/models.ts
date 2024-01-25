@@ -160,3 +160,11 @@ export interface PlayedHistoryApiDto {
     musicProvider: MusicProviderApiDto;
     includeInStatistics: boolean;
 }
+
+export interface DetailedArtistApiDto {
+    id: number;
+    name: string;
+    playedInfo: PlayedInfoApiDto;
+    externalUrls: Record<string, string>;
+    images: ImageApiDto[];
+}

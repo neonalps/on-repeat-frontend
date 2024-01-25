@@ -28,9 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const currentRefreshToken = authService.getRefreshToken();
   const currentRefreshTokenExpiresAt = authService.getRefreshTokenExpiresAt();
-  console.log('current refr', currentRefreshToken, currentAccessTokenExpiresAt);
   if (hasText(currentRefreshToken) && currentRefreshTokenExpiresAt != null && getNow() <= currentRefreshTokenExpiresAt) {
-    console.log('refreshing')
     return authService.refreshAccessToken(currentRefreshToken as string).pipe(
       switchMap((tokenResponse: TokenResponseDto) => {
         authReq = addAuthHeader(req, tokenResponse.accessToken);
