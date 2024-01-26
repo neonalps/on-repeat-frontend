@@ -56,8 +56,8 @@ export class RecentlyPlayedComponent {
     this.loadMore();
   }
 
-  goToTrack(id: number): void {
-    navigateToTrackDetails(this.router, id);
+  goToTrack(id: number, name: string): void {
+    navigateToTrackDetails(this.router, id, name);
   }
 
   private loadRecentlyPlayedTracks(): void {

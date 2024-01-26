@@ -14,7 +14,7 @@
                         </div>
                         <ng-container *ngIf="getCurrentTrackCharts().length > 0; else emptyList">
                             <ng-container *ngFor="let chartItem of getCurrentTrackCharts()">
-                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" />
+                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" (click)="goToTrack(chartItem.itemId, chartItem.name)" />
                             </ng-container>
                         </ng-container>
                         <ng-template #emptyList>Nothing</ng-template>
@@ -25,7 +25,7 @@
                         </div>
                         <ng-container *ngIf="getCurrentArtistCharts().length > 0; else emptyList">
                             <ng-container *ngFor="let chartItem of getCurrentArtistCharts()">
-                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" />
+                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" (click)="goToArtist(chartItem.itemId, chartItem.name)" />
                             </ng-container>
                         </ng-container>
                         <ng-template #emptyList>Nothing</ng-template>
@@ -41,7 +41,7 @@
                         </div>
                         <ng-container *ngIf="getAllTimeTrackCharts().length > 0; else emptyList">
                             <ng-container *ngFor="let chartItem of getAllTimeTrackCharts()">
-                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" />
+                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" (click)="goToTrack(chartItem.itemId, chartItem.name)" />
                             </ng-container>
                         </ng-container>
                         <ng-template #emptyList>Nothing</ng-template>
@@ -52,7 +52,7 @@
                         </div>
                         <ng-container *ngIf="getAllTimeArtistCharts().length > 0; else emptyList">
                             <ng-container *ngFor="let chartItem of getAllTimeArtistCharts()">
-                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" />
+                                <app-chart-item [chartItem]="chartItem" [countVisible]="false" (click)="goToArtist(chartItem.itemId, chartItem.name)" />
                             </ng-container>
                         </ng-container>
                         <ng-template #emptyList>Nothing</ng-template>
