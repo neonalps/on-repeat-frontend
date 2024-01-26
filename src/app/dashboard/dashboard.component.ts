@@ -72,12 +72,12 @@ export class DashboardComponent implements OnInit {
     return (allTimeArtistCharts as ChartApiDto<ChartArtistApiDto>).items.map(item => convertChartArtistApiDtoToChartItem(item));
   }
 
-  goToArtist(artistId: number): void {
-    navigateToArtistDetails(this.router, artistId);
+  goToArtist(artistId: number, artistName: string): void {
+    navigateToArtistDetails(this.router, artistId, artistName);
   }
 
-  goToTrack(trackId: number): void {
-    navigateToTrackDetails(this.router, trackId);
+  goToTrack(trackId: number, trackName: string): void {
+    navigateToTrackDetails(this.router, trackId, trackName);
   }
 
 }

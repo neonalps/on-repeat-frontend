@@ -6,7 +6,7 @@ import { loggedInGuard } from '@src/app/auth/guards/loggedin.guard';
 import { RecentlyPlayedComponent } from '@src/app/recently-played/recently-played.component';
 import { ProfileComponent } from '@src/app/pages/profile/profile.component';
 import { TrackDetailsComponent } from '@src/app/pages/track-details/track-details.component';
-import { PATH_PARAM_ARTIST_ID, PATH_PARAM_TRACK_ID } from '@src/app/util/router';
+import { PATH_PARAM_ARTIST_SLUG, PATH_PARAM_TRACK_SLUG } from '@src/app/util/router';
 import { ArtistDetailsComponent } from '@src/app/pages/artist-details/artist-details.component';
 
 export const routes: Routes = [
@@ -34,12 +34,12 @@ export const routes: Routes = [
         canActivate: [loggedInGuard],
     },
     { 
-        path: `tracks/:${PATH_PARAM_TRACK_ID}`, 
+        path: `tracks/:${PATH_PARAM_TRACK_SLUG}`, 
         component: TrackDetailsComponent,
         canActivate: [loggedInGuard],
     },
     { 
-        path: `artists/:${PATH_PARAM_ARTIST_ID}`, 
+        path: `artists/:${PATH_PARAM_ARTIST_SLUG}`, 
         component: ArtistDetailsComponent,
         canActivate: [loggedInGuard],
     },

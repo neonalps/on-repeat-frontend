@@ -6,7 +6,7 @@ import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { DetailedArtistApiDto, ImageApiDto } from '@src/app/models';
 import { ArtistService } from '@src/app/services/artist/artist.service';
 import { isNotDefined, pickImageFromArray } from '@src/app/util/common';
-import { PATH_PARAM_ARTIST_ID } from '@src/app/util/router';
+import { PATH_PARAM_ARTIST_SLUG, parseUrlSlug } from '@src/app/util/router';
 import { take } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ import { take } from 'rxjs';
   templateUrl: './artist-details.component.html',
   styleUrl: './artist-details.component.css'
 })
-export class ArtistDetailsComponent  implements OnInit {
+export class ArtistDetailsComponent implements OnInit {
 
   isLoading: boolean = true;
 
@@ -28,7 +28,7 @@ export class ArtistDetailsComponent  implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const artistId = Number(this.route.snapshot.paramMap.get(PATH_PARAM_ARTIST_ID));
+    const artistId = parseUrlSlug(this.route.snapshot.paramMap.get(PATH_PARAM_ARTIST_SLUG) as string);
     this.artistService.fetchArtist(artistId).pipe(
       take(1)
     ).subscribe({
