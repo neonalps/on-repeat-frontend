@@ -9,7 +9,7 @@ import { PlayedTrackService } from '@src/app/services/played-track/played-track.
 import { TrackService } from '@src/app/services/track/track.service';
 import { hasText, isNotDefined, pickImageFromArray } from '@src/app/util/common';
 import { getEarliestDateOfArray, getLatestDateOfArray } from '@src/app/util/date';
-import { PATH_PARAM_TRACK_ID, navigateToArtistDetails } from '@src/app/util/router';
+import { PATH_PARAM_TRACK_SLUG, navigateToArtistDetails, parseUrlSlug } from '@src/app/util/router';
 import { take } from 'rxjs';
 
 interface SimpleArtist {
@@ -47,7 +47,7 @@ export class TrackDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const trackId = Number(this.route.snapshot.paramMap.get(PATH_PARAM_TRACK_ID));
+    const trackId = parseUrlSlug(this.route.snapshot.paramMap.get(PATH_PARAM_TRACK_SLUG) as string);
     this.trackService.fetchTrack(trackId).pipe(
       take(1)
     ).subscribe({
@@ -134,8 +134,8 @@ export class TrackDetailsComponent implements OnInit {
     return this.track.playedInfo.lastPlayedAt;
   }
 
-  goToArtist(artistId: number): void {
-    navigateToArtistDetails(this.router, artistId);
+  goToArtist(artistId: number, artistName: string): void {
+    navigateToArtistDetails(this.router, artistId, artistName);
   }
 
   private updatePlayedTrackItem(playedTrackId: number, updatedItem: PlayedHistoryApiDto): void {
