@@ -3,6 +3,7 @@ import { ChartArtistApiDto, ChartTrackApiDto } from "@src/app/models";
 
 export function convertChartTrackApiDtoToChartItem(item: ChartTrackApiDto): ChartItem {
     return {
+        itemId: item.track.id,
         name: item.track.name,
         artists: item.track.artists.map(artist => artist.name),
         imageUrl: item.track.album?.images[0].url || "",
@@ -13,6 +14,7 @@ export function convertChartTrackApiDtoToChartItem(item: ChartTrackApiDto): Char
 
 export function convertChartArtistApiDtoToChartItem(item: ChartArtistApiDto): ChartItem {
     return {
+        itemId: item.artist.id,
         name: item.artist.name,
         artists: null,
         imageUrl: item.artist.images[0].url,
