@@ -54,6 +54,11 @@ export class PlayedTrackService {
     return this.http.get<PaginatedResponseDto<PlayedHistoryApiDto>>(requestUrl);
   }
 
+  updateIncludeInStatistics(playedTrackId: number, includeInStatistics: boolean): Observable<PlayedHistoryApiDto> {
+    const requestUrl = `${PlayedTrackService.PLAYED_TRACKS_URL}/${playedTrackId}`;
+    return this.http.post<PlayedHistoryApiDto>(requestUrl, { includeInStatistics });
+  }
+
   private fetchRecentlyPlayedTracks(): Observable<PaginatedResponseDto<PlayedTrackApiDto>> {
     const queryParams = new URLSearchParams();
     if (isDefined(this.nextPageKey)) {

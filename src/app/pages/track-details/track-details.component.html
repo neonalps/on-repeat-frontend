@@ -50,7 +50,7 @@
                             <div *ngFor="let entry of trackHistory" class="bg-color-dark-grey-lighter-20 rounded p-2 mt-2 flex justify-content-between">
                                 <div>{{ entry.playedAt | date:'medium' }}</div>
                                 <div class="mr-2">
-                                    <app-toggle-checkbox [title]="'includeInStatistics' | $t" [checked]="entry.includeInStatistics" />
+                                    <app-toggle-checkbox [title]="'includeInStatistics' | $t" [checked]="entry.includeInStatistics" (valueChange)="onToggleChange($event, entry)" />
                                 </div>
                             </div>
                         </div>

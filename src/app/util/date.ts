@@ -1,4 +1,5 @@
 import { validateDefined } from "@src/app/util/validation";
+import { isNotDefined } from "./common";
 
 export function getDateWithoutTime(input: Date): Date {
     validateDefined(input, "input");
@@ -23,4 +24,34 @@ export function getGroupableDateString(input: Date): string {
 
 export function getNow(): Date {
     return new Date();
+}
+
+export function getEarliestDateOfArray(dates: Date[]): Date | null {
+    if (isNotDefined(dates) || dates.length === 0) {
+        return null;
+    }
+
+    let currentEarliest: Date | null = null;
+    for (const item of dates) {
+        if (currentEarliest === null || item < currentEarliest) {
+            currentEarliest = item;
+        }
+    }
+
+    return currentEarliest;
+}
+
+export function getLatestDateOfArray(dates: Date[]): Date | null {
+    if (isNotDefined(dates) || dates.length === 0) {
+        return null;
+    }
+
+    let currentLatest: Date | null = null;
+    for (const item of dates) {
+        if (currentLatest === null || item > currentLatest) {
+            currentLatest = item;
+        }
+    }
+    
+    return currentLatest;
 }
