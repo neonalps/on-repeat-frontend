@@ -15,7 +15,7 @@ export interface PlayedTracksOnDate {
 @Injectable({
   providedIn: 'root'
 })
-export class PlayedTracksService {
+export class PlayedTrackService {
 
   private static readonly PLAYED_TRACKS_URL =`${environment.apiBaseUrl}/api/v1/played-tracks`;
 
@@ -50,8 +50,13 @@ export class PlayedTracksService {
       queryParams.set(API_QUERY_PARAM_NEXT_PAGE_KEY, trackNextPageKey as string);
     }
 
-    const requestUrl = `${PlayedTracksService.PLAYED_TRACKS_URL}/tracks/${trackId}?${queryParams.toString()}`;
+    const requestUrl = `${PlayedTrackService.PLAYED_TRACKS_URL}/tracks/${trackId}?${queryParams.toString()}`;
     return this.http.get<PaginatedResponseDto<PlayedHistoryApiDto>>(requestUrl);
+  }
+
+  updateIncludeInStatistics(playedTrackId: number, includeInStatistics: boolean): Observable<PlayedHistoryApiDto> {
+    const requestUrl = `${PlayedTrackService.PLAYED_TRACKS_URL}/${playedTrackId}`;
+    return this.http.post<PlayedHistoryApiDto>(requestUrl, { includeInStatistics });
   }
 
   private fetchRecentlyPlayedTracks(): Observable<PaginatedResponseDto<PlayedTrackApiDto>> {
@@ -60,7 +65,7 @@ export class PlayedTracksService {
       queryParams.set(API_QUERY_PARAM_NEXT_PAGE_KEY, this.nextPageKey as string);
     }
 
-    const requestUrl = `${PlayedTracksService.PLAYED_TRACKS_URL}?${queryParams.toString()}`;
+    const requestUrl = `${PlayedTrackService.PLAYED_TRACKS_URL}?${queryParams.toString()}`;
     return this.http.get<PaginatedResponseDto<PlayedTrackApiDto>>(requestUrl);
   }
 
