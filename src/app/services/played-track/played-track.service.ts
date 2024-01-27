@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment';
 import { PaginatedResponseDto, PlayedHistoryApiDto, PlayedTrackApiDto } from '@src/app/models';
-import { Observable, of, switchMap, take } from 'rxjs';
+import { Observable, of, switchMap, take, tap } from 'rxjs';
 import { API_QUERY_PARAM_NEXT_PAGE_KEY, hasText, isDefined } from '@src/app/util/common';
 import { getGroupableDateString } from '@src/app/util/date';
 import { groupBy } from '@src/app/util/collection';
@@ -56,7 +56,21 @@ export class PlayedTrackService {
 
   updateIncludeInStatistics(playedTrackId: number, includeInStatistics: boolean): Observable<PlayedHistoryApiDto> {
     const requestUrl = `${PlayedTrackService.PLAYED_TRACKS_URL}/${playedTrackId}`;
-    return this.http.post<PlayedHistoryApiDto>(requestUrl, { includeInStatistics });
+    return this.http.post<PlayedHistoryApiDto>(requestUrl, { includeInStatistics })
+      .pipe(tap(updatedItem => {
+        const dateString = getGroupableDateString(new Date(updatedItem.playedAt));
+        const storedTracksOnDate = this.playedTracksOnDate.find(item => item.date === dateString);
+        if (!isDefined(storedTracksOnDate)) {
+          return;
+        }
+
+        const storedPlayedTrack = storedTracksOnDate?.tracks.find(item => item.playedTrackId === updatedItem.playedTrackId);
+        if (!isDefined(storedPlayedTrack)) {
+          return;
+        }
+
+        (storedPlayedTrack as PlayedTrackApiDto).includeInStatistics = updatedItem.includeInStatistics;
+      }))
   }
 
   private fetchRecentlyPlayedTracks(): Observable<PaginatedResponseDto<PlayedTrackApiDto>> {
