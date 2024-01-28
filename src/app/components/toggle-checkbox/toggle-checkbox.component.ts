@@ -16,12 +16,10 @@ export class ToggleCheckboxComponent {
   @Output() readonly valueChange = new EventEmitter<CheckboxChangeEvent>();
 
   onChange() {
-    this.valueChange.next(ToggleCheckboxComponent.createCheckboxChangeEvent(!this.checked));
+    setTimeout(() => this.valueChange.next(ToggleCheckboxComponent.createCheckboxChangeEvent(!this.checked)), 300);
   }
 
-  private static createCheckboxChangeEvent(newCheckedValue: boolean): CheckboxChangeEvent {
-    return {
-      newChecked: newCheckedValue,
-    };
+  private static createCheckboxChangeEvent(newChecked: boolean): CheckboxChangeEvent {  
+    return { newChecked };
   } 
 }
