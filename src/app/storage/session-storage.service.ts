@@ -23,6 +23,8 @@ export class SessionStorageService implements KeyValueStore<string> {
   }
 
   remove(key: string): void {
+    validateNotBlank(key, "key");
+
     sessionStorage.removeItem(key);
   }
 
