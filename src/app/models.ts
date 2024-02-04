@@ -146,6 +146,16 @@ export interface DetailedTrackApiDto {
     discNumber: number | null;
     trackNumber: number | null;
     durationMs: number | null;
+    charts?: DetailedTrackChartApiDto[];
+}
+
+export interface DetailedTrackChartApiDto {
+    chart: {
+        id: number;
+        name: string;
+    },
+    place: number;
+    playCount: number | null;
 }
 
 export interface PlayedInfoApiDto {
