@@ -4,12 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { CheckboxChangeEvent, ToggleCheckboxComponent } from '@src/app/components/toggle-checkbox/toggle-checkbox.component';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
-import { DetailedTrackApiDto, ImageApiDto, PlayedHistoryApiDto } from '@src/app/models';
+import { DetailedTrackApiDto, DetailedTrackChartApiDto, ImageApiDto, PlayedHistoryApiDto } from '@src/app/models';
 import { PlayedTrackService } from '@src/app/services/played-track/played-track.service';
 import { TrackService } from '@src/app/services/track/track.service';
 import { hasText, isNotDefined, pickImageFromArray } from '@src/app/util/common';
 import { getEarliestDateOfArray, getLatestDateOfArray } from '@src/app/util/date';
-import { PATH_PARAM_TRACK_SLUG, navigateToArtistDetails, parseUrlSlug } from '@src/app/util/router';
+import { PATH_PARAM_TRACK_SLUG, navigateToArtistDetails, navigateToChartDetails, parseUrlSlug } from '@src/app/util/router';
 import { take } from 'rxjs';
 
 interface SimpleArtist {
@@ -134,8 +134,24 @@ export class TrackDetailsComponent implements OnInit {
     return this.track.playedInfo.lastPlayedAt;
   }
 
+  getChartEntryPlaceBackgroundColor(place: number): string {
+    return place === 1 ? 'bg-color-primary-lighter-30' : 'bg-color-dark-grey-lighter-30';
+  }
+
+  getChartEntries(): DetailedTrackChartApiDto[] {
+    return this.hasChartEntries() ? this.track.charts as DetailedTrackChartApiDto[] : [];
+  }
+
+  hasChartEntries(): boolean {
+    return this.track.charts !== undefined && this.track.charts.length > 0;
+  }
+
   goToArtist(artistId: number, artistName: string): void {
     navigateToArtistDetails(this.router, artistId, artistName);
+  }
+
+  goToChartDetails(chartId: number, chartName: string): void {
+    navigateToChartDetails(this.router, chartId, chartName);
   }
 
   private updatePlayedTrackItem(playedTrackId: number, updatedItem: PlayedHistoryApiDto): void {

@@ -20,28 +20,42 @@
                         <div class="text-sm mt-3">{{ getAlbum() }}</div>
                     </div>
                 </section>
-                <section class="mt-6 flex bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
-                    <div class="flex-auto align-self-center">
-                        <div class="border-r-1 border-r-solid border-r-white">
-                            <div class="bold text-md center">{{ getTimesPlayed() }}</div>
-                            <div class="uppercase text-xs mt-2 center">{{ 'played.times' | $t }}</div>
+                <ng-container *ngIf="hasChartEntries()">
+                    <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
+                        <div class="bold text-md pl-1 mb-4">{{ 'charts.entries' | $t }}</div>
+                        <ng-container *ngFor="let chartEntry of getChartEntries()">
+                            <div class="px-1 py-2 mt-4 flex bg-color-dark-grey-lighter-20 hover:bg-color-dark-grey-lighter-30 transition-colors rounded-md pointer align-items-center" (click)="goToChartDetails(chartEntry.chart.id, chartEntry.chart.name)">
+                                <div class="bold ml-3 mr-4 px-2 py-1 rounded" [ngClass]="getChartEntryPlaceBackgroundColor(chartEntry.place)">{{ chartEntry.place }}</div>
+                                <div>{{ chartEntry.chart.name }}</div>
+                            </div>
+                        </ng-container>
+                    </section>
+                </ng-container>
+                <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
+                    <div class="bold text-md pl-3 mb-6">{{ 'played.stats' | $t }}</div>
+                    <div class="flex">
+                        <div class="flex-auto align-self-center">
+                            <div class="border-r-1 border-r-solid border-r-white">
+                                <div class="bold text-md center">{{ getTimesPlayed() }}</div>
+                                <div class="uppercase text-xs mt-2 center">{{ 'played.times' | $t }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex-auto align-self-center">
-                        <div class="border-r-1 border-r-solid border-r-white">
-                            <div class="bold text-md center">{{ getFirstPlayedAt() !== null ? (getFirstPlayedAt() | date) : '-' }}</div>
-                            <div class="uppercase text-xs mt-2 center">{{ 'played.first' | $t }}</div>
+                        <div class="flex-auto align-self-center">
+                            <div class="border-r-1 border-r-solid border-r-white">
+                                <div class="bold text-md center">{{ getFirstPlayedAt() !== null ? (getFirstPlayedAt() | date) : '-' }}</div>
+                                <div class="uppercase text-xs mt-2 center">{{ 'played.first' | $t }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex-auto align-self-center">
-                        <div>
-                            <div class="bold text-md center">{{ getLastPlayedAt() !== null ? (getLastPlayedAt() | date) : '-' }}</div>
-                            <div class="uppercase text-xs mt-2 center">{{ 'played.last' | $t }}</div>
+                        <div class="flex-auto align-self-center">
+                            <div>
+                                <div class="bold text-md center">{{ getLastPlayedAt() !== null ? (getLastPlayedAt() | date) : '-' }}</div>
+                                <div class="uppercase text-xs mt-2 center">{{ 'played.last' | $t }}</div>
+                            </div>
                         </div>
                     </div>
                 </section>
                 <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
-                    <div class="bold text-md pl-1 mb-4">Played history</div>
+                    <div class="bold text-md pl-1 mb-4">{{ 'played.history' | $t }}</div>
                     <ng-container *ngIf="isTrackHistoryLoading; else loadedHistory">
                         <app-loading />
                     </ng-container>
