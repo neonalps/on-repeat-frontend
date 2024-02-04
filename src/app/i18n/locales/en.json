@@ -1,6 +1,11 @@
 {
     "artists": "Artists",
     "cancel": "Cancel",
+    "charts.add": "Add charts",
+    "charts.allTimeFavourites": "Your all-time favourites ❤️",
+    "charts.currentFavourites": "Your current favourites 🎸",
+    "charts.empty": "No charts have been created yet 😢 how about you change that right now?",
+    "charts.title": "Charts",
     "connect.spotify": "Connect Spotify account",
     "connectedAccounts.empty": "There are no music accounts connected yet 😢",
     "connectedAccounts.title": "Connected music accounts",
@@ -28,5 +33,6 @@
     "recentlyPlayedTracks.loadMore": "Load more tracks",
     "reload": "Reload",
     "signed.in.as": "Signed in as",
+    "spoilers": "Spoilers",
     "tracks": "Tracks"
 }

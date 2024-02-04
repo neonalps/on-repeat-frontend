@@ -533,6 +533,62 @@
     padding-left: 8rem;
 }
 
+.pr-1 {
+    padding-right: .25rem;
+}
+
+.pr-2 {
+    padding-right: .5rem;
+}
+
+.pr-3 {
+    padding-right: .75rem;
+}
+
+.pr-4 {
+    padding-right: 1rem;
+}
+
+.pr-5 {
+    padding-right: 1.25rem;
+}
+
+.pr-6 {
+    padding-right: 1.5rem;
+}
+
+.pr-7 {
+    padding-right: 1.75rem;
+}
+
+.pr-8 {
+    padding-right: 2rem;
+}
+
+.pr-8 {
+    padding-right: 2rem;
+}
+
+.pr-12 {
+    padding-right: 3rem;
+}
+
+.pr-16 {
+    padding-right: 4rem;
+}
+
+.pr-20 {
+    padding-right: 5rem;
+}
+
+.pr-24 {
+    padding-right: 6rem;
+}
+
+.pr-32 {
+    padding-right: 8rem;
+}
+
 .px-1 {
     padding-left: .25rem;
     padding-right: .25rem;
