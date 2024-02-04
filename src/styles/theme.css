@@ -1,5 +1,8 @@
 :root {
     --primary: #a96dad;
+    --primary-lighter-10: #b27cb5;
+    --primary-lighter-20: #ba8abd;
+    --primary-lighter-30: #c399c6;
     --white: #fafafa;
     --light-grey: #ccc;
     --dark-grey: #363737;

@@ -4,6 +4,18 @@
     background-color: var(--primary);
 }
 
+.bg-color-primary-lighter-10 {
+    background-color: var(--primary-lighter-10);
+}
+
+.bg-color-primary-lighter-20 {
+    background-color: var(--primary-lighter-20);
+}
+
+.bg-color-primary-lighter-30 {
+    background-color: var(--primary-lighter-30);
+}
+
 .bg-color-cyan-700 {
     background-color: rgb(14 116 144);
 }
