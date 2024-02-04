@@ -13,7 +13,7 @@
                     <div class="ml-6 align-self-center">
                         <div>
                             <ng-container *ngFor="let artist of getArtists()">
-                                <span class="text-lg pointer hover:text-primary" role="link" (click)="goToArtist(artist.id, artist.name)">{{ artist.name }}</span>
+                                <span class="text-lg pointer hover:text-primary inline-block mr-3" role="link" (click)="goToArtist(artist.id, artist.name)">{{ artist.name }}</span>
                             </ng-container>
                         </div>
                         <div class="bold text-xl">{{ getName() }}</div>

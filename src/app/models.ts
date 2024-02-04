@@ -91,12 +91,12 @@ export type ChartApiItem = ChartTrackApiDto | ChartArtistApiDto;
 export interface BasicDashboardInformationApiDto {
     charts: {
         tracks: {
-            allTime: ChartApiDto<ChartTrackApiDto>,
-            current: ChartApiDto<ChartTrackApiDto>,
+            allTime: ChartApiDto<AccountChartItemApiDto<unknown>>,
+            current: ChartApiDto<AccountChartItemApiDto<unknown>>,
         },
         artists: {
-            allTime: ChartApiDto<ChartArtistApiDto>,
-            current: ChartApiDto<ChartArtistApiDto>,
+            allTime: ChartApiDto<AccountChartItemApiDto<unknown>>,
+            current: ChartApiDto<AccountChartItemApiDto<unknown>>,
         },
     },
     stats: {
@@ -167,4 +167,25 @@ export interface DetailedArtistApiDto {
     playedInfo: PlayedInfoApiDto;
     externalUrls: Record<string, string>;
     images: ImageApiDto[];
+}
+
+export interface AccountChartApiDto {
+    id: number;
+    name: string;
+    type: string;
+    from: Date;
+    to: Date;
+    thumbnailUrl: string | null;
+    createdAt: Date;
+}
+
+export interface AccountChartItemApiDto<T> {
+    place: number;
+    item: T;
+    playCount: number | null;
+}
+
+export interface AccountChartDetailsApiDto<T> {
+    accountChart: AccountChartApiDto;
+    items: AccountChartItemApiDto<T>[];
 }

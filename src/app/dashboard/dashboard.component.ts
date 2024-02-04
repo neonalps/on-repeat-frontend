@@ -3,19 +3,16 @@ import { DashboardService } from '@src/app/services/dashboard/dashboard.service'
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { CommonModule } from '@angular/common';
-import { ChartItem, ChartItemComponent } from '@src/app/components/chart-item/chart-item.component';
-import { isNotDefined } from '@src/app/util/common';
-import { ChartApiDto, ChartArtistApiDto, ChartTrackApiDto } from '@src/app/models';
 import { DividerComponent } from '@src/app/components/divider/divider.component';
-import { convertChartArtistApiDtoToChartItem, convertChartTrackApiDtoToChartItem } from '@src/app/util/converter';
 import { navigateToArtistDetails, navigateToTrackDetails } from '@src/app/util/router';
 import { Router } from '@angular/router';
+import { AccountChartItemComponent, ChartItem } from '@src/app/components/account-chart-item/account-chart-item.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    ChartItemComponent, 
+    AccountChartItemComponent,
     CommonModule, 
     DividerComponent,
     I18nPipe, 
@@ -37,39 +34,19 @@ export class DashboardComponent implements OnInit {
   }
 
   getCurrentTrackCharts(): ChartItem[] {
-    const currentTrackCharts = this.dashboardService.getCurrentTrackCharts();
-    if (isNotDefined(currentTrackCharts)) {
-      return [];
-    }
-
-    return (currentTrackCharts as ChartApiDto<ChartTrackApiDto>).items.map(item => convertChartTrackApiDtoToChartItem(item));
+    return this.dashboardService.getCurrentTrackCharts();
   }
 
   getCurrentArtistCharts(): ChartItem[] {
-    const currentArtistCharts = this.dashboardService.getCurrentArtistCharts();
-    if (isNotDefined(currentArtistCharts)) {
-      return [];
-    }
-
-    return (currentArtistCharts as ChartApiDto<ChartArtistApiDto>).items.map(item => convertChartArtistApiDtoToChartItem(item));
+    return this.dashboardService.getCurrentArtistCharts();
   }
 
   getAllTimeTrackCharts(): ChartItem[] {
-    const allTimeTrackCharts = this.dashboardService.getAllTimeTrackCharts();
-    if (isNotDefined(allTimeTrackCharts)) {
-      return [];
-    }
-
-    return (allTimeTrackCharts as ChartApiDto<ChartTrackApiDto>).items.map(item => convertChartTrackApiDtoToChartItem(item));
+    return this.dashboardService.getAllTimeTrackCharts();
   }
 
   getAllTimeArtistCharts(): ChartItem[] {
-    const allTimeArtistCharts = this.dashboardService.getAllTimeArtistCharts();
-    if (isNotDefined(allTimeArtistCharts)) {
-      return [];
-    }
-
-    return (allTimeArtistCharts as ChartApiDto<ChartArtistApiDto>).items.map(item => convertChartArtistApiDtoToChartItem(item));
+    return this.dashboardService.getAllTimeArtistCharts();
   }
 
   goToArtist(artistId: number, artistName: string): void {
