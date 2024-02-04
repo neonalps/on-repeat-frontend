@@ -1,0 +1,11 @@
+.place-container {
+    flex: 0 1 13%;
+}
+
+.image-container {
+    flex: 0 1 23%;
+}
+
+.details-container {
+    flex: 1 0 auto;
+}

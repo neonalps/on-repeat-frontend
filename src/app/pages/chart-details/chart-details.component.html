@@ -1,0 +1,25 @@
+<section class="page-content large-screen">
+    <section class="large-screen-placeholder"></section>
+    <section class="content large-screen-main">
+        <div *ngIf="isLoading; else loaded">
+            <app-loading />
+        </div>
+        <ng-template #loaded>
+            <section class="page-content-header">
+                <section class="page-content-header flex">
+                    <div class="title flex-auto mb-3">{{ getTitle() }}</div>
+                    <div class="flex-auto flex justify-content-flex-end align-items-center">
+                        <div class="text-xs bold mr-3 pointer" (click)="toggleCheckbox()">{{ 'spoilers' | $t }}</div>
+                        <app-toggle-checkbox [title]="'spoilers' | $t" [checked]="areSpoilersEnabled" (valueChange)="onToggleChange($event)" />
+                    </div>
+                </section>
+            </section>
+            <section class="page-content-main">
+                <ng-container *ngFor="let item of getItems()">
+                    <app-account-chart-item [item]="item"/>
+                </ng-container>
+            </section>
+        </ng-template>
+    </section>
+    <section class="large-screen-placeholder"></section>
+</section>

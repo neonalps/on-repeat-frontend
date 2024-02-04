@@ -2,6 +2,7 @@ import { Router } from "@angular/router";
 
 export const PATH_PARAM_ARTIST_SLUG = "artistSlug";
 export const PATH_PARAM_TRACK_SLUG = "trackSlug";
+export const PATH_PARAM_CHART_SLUG = "chartSlug";
 
 export function navigateToTrackDetails(router: Router, trackId: number, trackName: string): void {
     router.navigate(["/tracks", createUrlSlug(trackId, trackName)]);
@@ -9,6 +10,10 @@ export function navigateToTrackDetails(router: Router, trackId: number, trackNam
 
 export function navigateToArtistDetails(router: Router, artistId: number, artistName: string): void {
     router.navigate(["/artists", createUrlSlug(artistId, artistName)]);
+}
+
+export function navigateToChartDetails(router: Router, chartId: number, chartName: string): void {
+    router.navigate(["/charts", createUrlSlug(chartId, chartName)]);
 }
 
 export function parseUrlSlug(slug: string): number {

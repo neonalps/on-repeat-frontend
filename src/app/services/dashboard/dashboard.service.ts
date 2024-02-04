@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment';
 import { Observable, take } from 'rxjs';
-import { BasicDashboardInformationApiDto, ChartApiDto, ChartApiItem } from '@src/app/models';
-import { isNotDefined } from '@src/app/util/common';
+import { AccountChartItemApiDto, ArtistApiDto, BasicDashboardInformationApiDto, TrackApiDto } from '@src/app/models';
+import { isNotDefined, pickImageFromArray } from '@src/app/util/common';
+import { ChartItem } from '@src/app/components/account-chart-item/account-chart-item.component';
 
 @Injectable({
   providedIn: 'root'
@@ -28,39 +29,69 @@ export class DashboardService {
       });
   }
 
-  getCurrentTrackCharts(): ChartApiDto<ChartApiItem> | null {
+  getCurrentTrackCharts(): ChartItem[] {
     if (isNotDefined(this.basicDashboard)) {
-      return null;
+      return [];
     }
 
-    return (this.basicDashboard as BasicDashboardInformationApiDto).charts.tracks.current;
+    return (this.basicDashboard as BasicDashboardInformationApiDto).charts.tracks.current.items.map(item => this.mapTrackToChartItem(item));
   }
 
-  getCurrentArtistCharts(): ChartApiDto<ChartApiItem> | null {
+  getCurrentArtistCharts(): ChartItem[] {
     if (isNotDefined(this.basicDashboard)) {
-      return null;
+      return [];
     }
 
-    return (this.basicDashboard as BasicDashboardInformationApiDto).charts.artists.current;
+    return (this.basicDashboard as BasicDashboardInformationApiDto).charts.artists.current.items.map(item => this.mapArtistToChartItem(item));
   }
   
-  getAllTimeTrackCharts(): ChartApiDto<ChartApiItem> | null {
+  getAllTimeTrackCharts(): ChartItem[] {
     if (isNotDefined(this.basicDashboard)) {
-      return null;
+      return [];
     }
 
-    return (this.basicDashboard as BasicDashboardInformationApiDto).charts.tracks.allTime;
+    return (this.basicDashboard as BasicDashboardInformationApiDto).charts.tracks.allTime.items.map(item => this.mapTrackToChartItem(item));
   }
 
-  getAllTimeArtistCharts(): ChartApiDto<ChartApiItem> | null {
+  getAllTimeArtistCharts(): ChartItem[] {
     if (isNotDefined(this.basicDashboard)) {
-      return null;
+      return [];
     }
 
-    return (this.basicDashboard as BasicDashboardInformationApiDto).charts.artists.allTime;
+    return (this.basicDashboard as BasicDashboardInformationApiDto).charts.artists.allTime.items.map(item => this.mapArtistToChartItem(item));
   }
 
   private fetchBasicDashboard(): Observable<BasicDashboardInformationApiDto> {
     return this.http.get<BasicDashboardInformationApiDto>(DashboardService.BASIC_DASHBOARD_URL);
+  }
+
+  private mapTrackToChartItem(item: AccountChartItemApiDto<unknown>): ChartItem {
+    const track = item as AccountChartItemApiDto<TrackApiDto>;
+
+    return {
+      place: item.place,
+      itemId: track.item.id,
+      name: track.item.name,
+      artists: track.item.artists.map(artist => artist.name),
+      album: track.item.album?.name || null,
+      imageUrl: pickImageFromArray(track.item.album?.images, "small")?.url || null,
+      playCount: item.playCount,
+      type: 'track',
+    };
+  }
+
+  private mapArtistToChartItem(item: AccountChartItemApiDto<unknown>): ChartItem {
+    const artist = item as AccountChartItemApiDto<ArtistApiDto>;
+
+    return {
+      place: item.place,
+      itemId: artist.item.id,
+      name: artist.item.name,
+      artists: [],
+      album: null,
+      imageUrl: pickImageFromArray(artist.item.images, "small")?.url || null,
+      playCount: item.playCount,
+      type: 'artist',
+    };
   }
 }
