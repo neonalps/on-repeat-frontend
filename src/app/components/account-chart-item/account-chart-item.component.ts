@@ -58,6 +58,8 @@ export class AccountChartItemComponent {
 }
 
 export interface ChartItem {
+  chartId: number;
+  chartName: string;
   place: number;
   itemId: number;
   name: string;

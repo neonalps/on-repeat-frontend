@@ -14,23 +14,34 @@
                         <div class="bold text-xl">{{ getName() }}</div>
                     </div>
                 </section>
-                <section class="mt-6 flex bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
-                    <div class="flex-auto align-self-center">
-                        <div class="border-r-1 border-r-solid border-r-white">
-                            <div class="bold text-md center">{{ getTimesPlayed() }}</div>
-                            <div class="uppercase text-xs mt-2 center">{{ 'played.times' | $t }}</div>
+                <ng-container *ngIf="hasChartEntries()">
+                    <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
+                        <div class="bold text-md pl-1 mb-4">{{ 'charts.entries' | $t }}</div>
+                        <ng-container *ngFor="let chartEntry of getChartEntries()">
+                            <app-artist-details-chart-item [item]="chartEntry" />
+                        </ng-container>
+                    </section>
+                </ng-container>
+                <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
+                    <div class="bold text-md pl-3 mb-6">{{ 'played.stats' | $t }}</div>
+                    <div class="flex">
+                        <div class="flex-auto align-self-center">
+                            <div class="border-r-1 border-r-solid border-r-white">
+                                <div class="bold text-md center">{{ getTimesPlayed() }}</div>
+                                <div class="uppercase text-xs mt-2 center">{{ 'played.times' | $t }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex-auto align-self-center">
-                        <div class="border-r-1 border-r-solid border-r-white">
-                            <div class="bold text-md center">{{ getFirstPlayedAt() !== null ? (getFirstPlayedAt() | date) : '-' }}</div>
-                            <div class="uppercase text-xs mt-2 center">{{ 'played.first' | $t }}</div>
+                        <div class="flex-auto align-self-center">
+                            <div class="border-r-1 border-r-solid border-r-white">
+                                <div class="bold text-md center">{{ getFirstPlayedAt() !== null ? (getFirstPlayedAt() | date) : '-' }}</div>
+                                <div class="uppercase text-xs mt-2 center">{{ 'played.first' | $t }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex-auto align-self-center">
-                        <div>
-                            <div class="bold text-md center">{{ getLastPlayedAt() !== null ? (getLastPlayedAt() | date) : '-' }}</div>
-                            <div class="uppercase text-xs mt-2 center">{{ 'played.last' | $t }}</div>
+                        <div class="flex-auto align-self-center">
+                            <div>
+                                <div class="bold text-md center">{{ getLastPlayedAt() !== null ? (getLastPlayedAt() | date) : '-' }}</div>
+                                <div class="uppercase text-xs mt-2 center">{{ 'played.last' | $t }}</div>
+                            </div>
                         </div>
                     </div>
                 </section>
