@@ -78,18 +78,20 @@ export class ChartDetailsComponent implements OnInit {
     const chartType = response.accountChart.type;
     switch (chartType) {
       case "track":
-        return this.processTrackCharts(response.items as AccountChartItemApiDto<TrackApiDto>[]);
+        return this.processTrackCharts(response.items as AccountChartItemApiDto<TrackApiDto>[], response.accountChart.id, response.accountChart.name);
       default:
         console.warn(`Unknown chart type ${chartType}`);
         return [];
     }
   }
 
-  private processTrackCharts(items: AccountChartItemApiDto<TrackApiDto>[]): ChartItem[] {
+  private processTrackCharts(items: AccountChartItemApiDto<TrackApiDto>[], chartId: number, chartName: string): ChartItem[] {
     return items.map(item => {
       const image = pickImageFromArray(item.item.album?.images, 'small');
 
       return {
+        chartId,
+        chartName,
         itemId: item.item.id,
         name: item.item.name,
         place: item.place,
