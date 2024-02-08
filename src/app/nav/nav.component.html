@@ -20,5 +20,46 @@
             </ng-template>
         </ul>
     </nav>
-    <span class="hamburger-menu material-symbols-outlined" (click)="toggle()">menu</span>
+    <section class="search" [ngClass]="{'active': (searchVisible$ | async) === true}">
+        <section class="flex w-full">
+            <section class="search-placeholder"></section>
+            <section class="search-main">
+                <div>
+                    <input type="text" class="search-input bg-color-dark-grey-lighter-30 text-white text-xl bold p-2 w-full" (input)="onSearchChange($event)" #search />
+                </div>
+                <div>
+                    <ng-container *ngIf="isSearching; else searchResult">
+                        <app-loading />
+                    </ng-container>
+                    <ng-template #searchResult>
+                        <ng-container *ngIf="searchResults.length > 0; else emptySearchResult">
+                            <ng-container *ngFor="let searchResultItem of searchResults">
+                                <div class="px-1 py-3 mt-4 flex bg-color-dark-grey-lighter-30 hover:bg-color-dark-grey-lighter-20 transition-colors rounded-md pointer" (click)="itemSelected(searchResultItem)">
+                                    <div class="image-container flex-auto flex justify-content-center align-self-center px-2">
+                                        <img loading="lazy" [src]="searchResultItem.imageUrl"/>
+                                    </div>
+                                    <div class="details-container flex align-items-center justify-content-start ml-2">
+                                        <div class="text-left">
+                                            <div class="bold text-base" *ngIf="searchResultItem.artists !== null">{{ searchResultItem.artists }}</div>
+                                            <div class="text-base" [ngClass]="{ 'bold': searchResultItem.artists === null }">{{ searchResultItem.name }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #emptySearchResult>
+                            <div *ngIf="shouldShowEmptySearch()" class="mt-4">{{ 'search.empty' | $t }}</div>
+                        </ng-template>
+                    </ng-template>
+                </div>
+            </section>
+            <section class="search-placeholder"></section>
+        </section>
+    </section>
+    <div class="flex">
+        <div class="search-icon mr-6">
+            <app-search (click)="toggleSearch()" />
+        </div>
+        <div class="hamburger-menu material-symbols-outlined" (click)="toggleMenu()">menu</div>
+    </div>
 </div>

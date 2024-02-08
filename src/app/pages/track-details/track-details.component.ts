@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, NavigationSkipped, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { CheckboxChangeEvent, ToggleCheckboxComponent } from '@src/app/components/toggle-checkbox/toggle-checkbox.component';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { DetailedTrackApiDto, DetailedTrackChartApiDto, ImageApiDto, PlayedHistoryApiDto } from '@src/app/models';
 import { PlayedTrackService } from '@src/app/services/played-track/played-track.service';
 import { TrackService } from '@src/app/services/track/track.service';
+import { hideSearch } from '@src/app/ui-state/store/ui-state.actions';
 import { hasText, isNotDefined, pickImageFromArray } from '@src/app/util/common';
 import { getEarliestDateOfArray, getLatestDateOfArray } from '@src/app/util/date';
 import { PATH_PARAM_TRACK_SLUG, navigateToArtistDetails, navigateToChartDetails, parseUrlSlug } from '@src/app/util/router';
@@ -30,7 +33,7 @@ interface SimpleArtist {
   templateUrl: './track-details.component.html',
   styleUrl: './track-details.component.css'
 })
-export class TrackDetailsComponent implements OnInit {
+export class TrackDetailsComponent {
 
   isLoading: boolean = true;
   isTrackHistoryLoading: boolean = true;
@@ -42,11 +45,22 @@ export class TrackDetailsComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly store: Store,
     private readonly trackService: TrackService, 
-    private readonly playedTrackService: PlayedTrackService
-  ) {}
+    private readonly playedTrackService: PlayedTrackService,
+  ) {
+    this.router.events
+      .pipe(takeUntilDestroyed())
+      .subscribe(value => {
+        if (value instanceof NavigationEnd) {
+          this.loadTrackdetails();
+        } else if (value instanceof NavigationSkipped) {
+          this.store.dispatch(hideSearch());
+        }
+      });
+  }
 
-  ngOnInit(): void {
+  loadTrackdetails(): void {
     const trackId = parseUrlSlug(this.route.snapshot.paramMap.get(PATH_PARAM_TRACK_SLUG) as string);
     this.trackService.fetchTrack(trackId).pipe(
       take(1)

@@ -6,10 +6,19 @@
     margin: 0;
 }
 
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: var(--dark-grey);
     color: var(--white);
+}
+
+textarea:focus, input:focus {
+    outline: none;
 }
 
 ul {
@@ -175,11 +184,6 @@ header {
         z-index: 10001;
     }
 
-    .nav {
-        flex-direction: column;
-        gap: 2rem;
-    }
-
     .nav--ul__one,
     .nav--ul__two {
         flex-direction: column;
@@ -192,6 +196,9 @@ header {
     }
 
     .nav {
+        flex-direction: column;
+        gap: 2rem;
+
         position: absolute;
         top: 0;
         right: -100%;
@@ -202,7 +209,7 @@ header {
 
         align-items: center;
         text-align: center;
-        background-color: var(--dark-grey-lighter);
+        background-color: var(--primary);
         color: var(--white);
 
         transition: 0.15s ease-in-out;

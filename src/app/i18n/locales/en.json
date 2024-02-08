@@ -35,6 +35,8 @@
     "recentlyPlayedTracks.empty": "No played tracks recorded yet. Why don't you go and listen to some right now?",
     "recentlyPlayedTracks.loadMore": "Load more tracks",
     "reload": "Reload",
+    "search": "Search",
+    "search.empty": "No results could be found for your search 😢",
     "signed.in.as": "Signed in as",
     "spoilers": "Spoilers",
     "tracks": "Tracks"
