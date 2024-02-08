@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ChartItem } from '../account-chart-item/account-chart-item.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { navigateToChartDetails } from '@src/app/util/router';
+import { navigateToChartDetails, navigateToTrackDetails } from '@src/app/util/router';
 
 @Component({
   selector: 'app-artist-details-chart-item',
@@ -34,7 +34,7 @@ export class ArtistDetailsChartItemComponent {
   }
 
   goToItem(): void {
-    navigateToChartDetails(this.router, this.item.chartId, this.item.chartName);
+    navigateToTrackDetails(this.router, this.item.itemId, this.item.name);
   }
 
 }

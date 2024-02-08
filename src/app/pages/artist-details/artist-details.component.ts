@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, NavigationSkipped, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ChartItem } from '@src/app/components/account-chart-item/account-chart-item.component';
 import { ArtistDetailsChartItemComponent } from '@src/app/components/artist-details-chart-item/artist-details-chart-item.component';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { DetailedArtistApiDto, DetailedArtistChartApiDto, ImageApiDto } from '@src/app/models';
 import { ArtistService } from '@src/app/services/artist/artist.service';
+import { AppState } from '@src/app/store.index';
+import { hideSearch } from '@src/app/ui-state/store/ui-state.actions';
 import { isNotDefined, pickImageFromArray } from '@src/app/util/common';
-import { PATH_PARAM_ARTIST_SLUG, navigateToChartDetails, parseUrlSlug } from '@src/app/util/router';
+import { PATH_PARAM_ARTIST_SLUG, parseUrlSlug } from '@src/app/util/router';
 import { take } from 'rxjs';
 
 @Component({
@@ -18,7 +22,7 @@ import { take } from 'rxjs';
   templateUrl: './artist-details.component.html',
   styleUrl: './artist-details.component.css'
 })
-export class ArtistDetailsComponent implements OnInit {
+export class ArtistDetailsComponent {
 
   isLoading: boolean = true;
 
@@ -28,9 +32,20 @@ export class ArtistDetailsComponent implements OnInit {
     private readonly artistService: ArtistService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-  ) {}
+    private readonly store: Store<AppState>,
+  ) {
+    this.router.events
+      .pipe(takeUntilDestroyed())
+      .subscribe(value => {
+        if (value instanceof NavigationEnd) {
+          this.loadArtistDetails();
+        } else if (value instanceof NavigationSkipped) {
+          this.store.dispatch(hideSearch());
+        }
+      });
+  }
 
-  ngOnInit(): void {
+  loadArtistDetails(): void {
     const artistId = parseUrlSlug(this.route.snapshot.paramMap.get(PATH_PARAM_ARTIST_SLUG) as string);
     this.artistService.fetchArtist(artistId).pipe(
       take(1)
@@ -81,10 +96,6 @@ export class ArtistDetailsComponent implements OnInit {
 
   hasChartEntries(): boolean {
     return this.artist.charts !== undefined && this.artist.charts.length > 0;
-  }
-
-  goToChartDetails(chartId: number, chartName: string): void {
-    navigateToChartDetails(this.router, chartId, chartName);
   }
 
   private convertToChartItems(entries?: DetailedArtistChartApiDto[]): ChartItem[] {

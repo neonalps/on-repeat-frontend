@@ -193,6 +193,10 @@
     color: var(--warning);
 }
 
+.text-white {
+    color: var(--white);
+}
+
 .bold {
     font-weight: bold;
 }
@@ -794,6 +798,14 @@
     width: 75%;
 }
 
+.w-4\/5 {
+    width: 80%;
+}
+
+.w-9\/10 {
+    width: 90%;
+}
+
 .w-full {
     width: 100%;
 }
@@ -846,6 +858,10 @@
 .text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
+}
+
+.text-left {
+    text-align: left;
 }
 
 .relative {

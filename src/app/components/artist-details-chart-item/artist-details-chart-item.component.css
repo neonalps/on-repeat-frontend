@@ -1,5 +1,5 @@
-.place-container {
-    flex: 0 0 10%;
+.charts-container {
+    flex: 0 0 28%;
 }
 
 .image-container {
@@ -7,9 +7,5 @@
 }
 
 .details-container {
-    flex: 1 0 auto;
-}
-
-.charts-container {
-    flex: 0 0 auto;
+    flex: 0 0 50%;
 }

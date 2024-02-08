@@ -210,3 +210,12 @@ export interface AccountChartDetailsApiDto<T> {
     accountChart: AccountChartApiDto;
     items: AccountChartItemApiDto<T>[];
 }
+
+export interface FullTextSearchResponseApiDto {
+    results: SearchResultItemApiDto[];
+}
+
+export interface SearchResultItemApiDto {
+    type: string;
+    item: TrackApiDto | AlbumApiDto | ArtistApiDto | AccountChartApiDto;
+}
