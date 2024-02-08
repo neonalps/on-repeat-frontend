@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, NavigationSkipped, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { CheckboxChangeEvent, ToggleCheckboxComponent } from '@src/app/components/toggle-checkbox/toggle-checkbox.component';
+import { ScrollNearEndDirective } from '@src/app/directives/scroll-near-end/scroll-near-end.directive';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { DetailedTrackApiDto, DetailedTrackChartApiDto, ImageApiDto, PlayedHistoryApiDto } from '@src/app/models';
 import { PlayedTrackService } from '@src/app/services/played-track/played-track.service';
@@ -13,7 +14,7 @@ import { hideSearch } from '@src/app/ui-state/store/ui-state.actions';
 import { hasText, isNotDefined, pickImageFromArray } from '@src/app/util/common';
 import { getEarliestDateOfArray, getLatestDateOfArray } from '@src/app/util/date';
 import { PATH_PARAM_TRACK_SLUG, navigateToArtistDetails, navigateToChartDetails, parseUrlSlug } from '@src/app/util/router';
-import { take } from 'rxjs';
+import { Subject, take, tap, throttleTime } from 'rxjs';
 
 interface SimpleArtist {
   id: number;
@@ -28,6 +29,7 @@ interface SimpleArtist {
     CommonModule, 
     I18nPipe, 
     LoadingComponent, 
+    ScrollNearEndDirective,
     ToggleCheckboxComponent,
   ],
   templateUrl: './track-details.component.html',
@@ -35,12 +37,14 @@ interface SimpleArtist {
 })
 export class TrackDetailsComponent {
 
-  isLoading: boolean = true;
-  isTrackHistoryLoading: boolean = true;
+  isLoading: boolean = false;
+  isTrackHistoryLoading: boolean = false;
   trackHistory: PlayedHistoryApiDto[] = [];
+  trackId: number | null = null;
 
   private track!: DetailedTrackApiDto;
-  private trackHistoryNextPageKey: string | null = null;
+  private trackHistoryNextPageKey?: string;
+  private scrollEndSubject = new Subject<void>();
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -58,11 +62,17 @@ export class TrackDetailsComponent {
           this.store.dispatch(hideSearch());
         }
       });
+
+      this.scrollEndSubject.pipe(
+        takeUntilDestroyed(),
+        throttleTime(200)
+      ).subscribe(() => this.loadMore());
   }
 
   loadTrackdetails(): void {
-    const trackId = parseUrlSlug(this.route.snapshot.paramMap.get(PATH_PARAM_TRACK_SLUG) as string);
-    this.trackService.fetchTrack(trackId).pipe(
+    this.isLoading = true;
+    this.trackId = parseUrlSlug(this.route.snapshot.paramMap.get(PATH_PARAM_TRACK_SLUG) as string);
+    this.trackService.fetchTrack(this.trackId).pipe(
       take(1)
     ).subscribe({
       next: response => {
@@ -75,19 +85,7 @@ export class TrackDetailsComponent {
       }
     });
 
-    this.playedTrackService.fetchTrackPlayedHistory(trackId).pipe(
-      take(1),
-    ).subscribe({
-      next: response => {
-        this.trackHistory = response.items;
-        this.trackHistoryNextPageKey = hasText(response.nextPageKey) ? response.nextPageKey as string : null;
-        this.isTrackHistoryLoading = false;
-      },
-      error: error => {
-        this.isTrackHistoryLoading = false;
-        console.error(error);
-      }
-    })
+    this.loadTrackHistory();
   }
 
   onToggleChange(event: CheckboxChangeEvent, playedTrack: PlayedHistoryApiDto) {
@@ -166,6 +164,39 @@ export class TrackDetailsComponent {
 
   goToChartDetails(chartId: number, chartName: string): void {
     navigateToChartDetails(this.router, chartId, chartName);
+  }
+
+  onNearEndScroll(): void {
+    this.scrollEndSubject.next();
+  }
+
+  isLoadMoreAvailable(): boolean {
+    return !this.isLoading && hasText(this.trackHistoryNextPageKey);
+  }
+
+  loadMore(): void {
+    if (!this.isLoadMoreAvailable()) {
+      return;
+    }
+
+    this.loadTrackHistory();
+  }
+
+  private loadTrackHistory() {
+    this.isTrackHistoryLoading = true;
+    this.playedTrackService.fetchTrackPlayedHistory(this.trackId as number, this.trackHistoryNextPageKey).pipe(
+      take(1),
+    ).subscribe({
+      next: response => {
+        this.trackHistory.push(...response.items);
+        this.trackHistoryNextPageKey = response.nextPageKey;
+        this.isTrackHistoryLoading = false;
+      },
+      error: error => {
+        this.isTrackHistoryLoading = false;
+        console.error(error);
+      }
+    })
   }
 
   private updatePlayedTrackItem(playedTrackId: number, updatedItem: PlayedHistoryApiDto): void {

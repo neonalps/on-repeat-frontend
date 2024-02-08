@@ -1,4 +1,4 @@
-<section class="page-content large-screen">
+<section class="page-content large-screen" appScrollNearEnd (nearEnd)="onNearEndScroll()">
     <section class="large-screen-placeholder"></section>
     <section class="content large-screen-main">
         <div *ngIf="isLoading; else loaded">
@@ -56,19 +56,17 @@
                 </section>
                 <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
                     <div class="bold text-md pl-1 mb-4">{{ 'played.history' | $t }}</div>
-                    <ng-container *ngIf="isTrackHistoryLoading; else loadedHistory">
-                        <app-loading />
-                    </ng-container>
-                    <ng-template #loadedHistory>
-                        <div>
-                            <div *ngFor="let entry of trackHistory" class="bg-color-dark-grey-lighter-20 rounded p-2 mt-2 flex justify-content-between">
-                                <div>{{ entry.playedAt | date:'medium' }}</div>
-                                <div class="mr-2">
-                                    <app-toggle-checkbox [title]="'includeInStatistics' | $t" [checked]="entry.includeInStatistics" (valueChange)="onToggleChange($event, entry)" />
-                                </div>
+                    <div>
+                        <div *ngFor="let entry of trackHistory" class="bg-color-dark-grey-lighter-20 rounded p-2 mt-2 flex justify-content-between">
+                            <div>{{ entry.playedAt | date:'medium' }}</div>
+                            <div class="mr-2">
+                                <app-toggle-checkbox [title]="'includeInStatistics' | $t" [checked]="entry.includeInStatistics" (valueChange)="onToggleChange($event, entry)" />
                             </div>
                         </div>
-                    </ng-template>
+                        <ng-container *ngIf="isTrackHistoryLoading">
+                            <app-loading />
+                        </ng-container>
+                    </div>
                 </section>
             </section>
         </ng-template>
