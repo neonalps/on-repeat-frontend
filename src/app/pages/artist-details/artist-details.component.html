@@ -1,4 +1,4 @@
-<section class="page-content large-screen">
+<section class="page-content large-screen" appScrollNearEnd (nearEnd)="onNearEndScroll()">
     <section class="large-screen-placeholder"></section>
     <section class="content large-screen-main">
         <div *ngIf="isLoading; else loaded">
@@ -43,6 +43,14 @@
                                 <div class="uppercase text-xs mt-2 center">{{ 'played.last' | $t }}</div>
                             </div>
                         </div>
+                    </div>
+                </section>
+                <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
+                    <div class="bold text-md pl-3 mb-6">{{ 'tracks.favourite' | $t }}</div>
+                    <div class="px-2">
+                        <ng-container *ngFor="let playedTrack of getPlayedTracks()">
+                            <app-account-chart-item [item]="playedTrack" [hidePlace]="true" [notBold]="true" />
+                        </ng-container>
                     </div>
                 </section>
             </section>

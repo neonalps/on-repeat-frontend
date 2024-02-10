@@ -39,5 +39,6 @@
     "search.empty": "No results could be found for your search 😢",
     "signed.in.as": "Signed in as",
     "spoilers": "Spoilers",
-    "tracks": "Tracks"
+    "tracks": "Tracks",
+    "tracks.favourite": "Favourite tracks"
 }

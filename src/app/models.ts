@@ -219,3 +219,12 @@ export interface SearchResultItemApiDto {
     type: string;
     item: TrackApiDto | AlbumApiDto | ArtistApiDto | AccountChartApiDto;
 }
+
+export interface ArtistPlayedTrackApiDto {
+    id: number;
+    name: string;
+    href: string;
+    album: AlbumApiDto | null;
+    additionalArtists: ArtistApiDto[];
+    timesPlayed: number;
+}
