@@ -10,7 +10,7 @@
     <div class="details-container pl-2 flex align-items-center">
         <div>
             <div>
-                <span class="bold">{{ getArtists() }}</span>
+                <span [ngClass]="{ 'bold': isBold() }">{{ getArtists() }}</span>
             </div>
             <ng-container *ngIf="getName() !== null">
                 <div class="mt-1"><a>{{ getName() }}</a></div>

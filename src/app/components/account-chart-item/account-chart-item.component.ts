@@ -15,6 +15,7 @@ export class AccountChartItemComponent {
   @Input() item!: ChartItem;
   @Input() hidePlace?: boolean;
   @Input() hidePlayCount?: boolean;
+  @Input() notBold?: boolean;
 
   constructor(private readonly router: Router) {}
 
@@ -54,6 +55,10 @@ export class AccountChartItemComponent {
 
   isPlayCountVisible(): boolean {
     return this.hidePlayCount !== true
+  }
+
+  isBold(): boolean {
+    return this.notBold !== true;
   }
 }
 
