@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 export const PATH_PARAM_ARTIST_SLUG = "artistSlug";
 export const PATH_PARAM_TRACK_SLUG = "trackSlug";
 export const PATH_PARAM_CHART_SLUG = "chartSlug";
+export const PATH_PARAM_CHART_PERIOD_SLUG = "chartPeriodSlug";
 
 export function navigateToTrackDetails(router: Router, trackId: number, trackName: string): void {
     router.navigate(["/tracks", createUrlSlug(trackId, trackName)]);
