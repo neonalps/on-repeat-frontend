@@ -65,10 +65,10 @@ export class ChartPeriodComponent {
 
     this.isLoading = true;
 
-    const [from, to, title] = this.parsePeriod(period);
+    const [from, to, limit, title] = this.parsePeriod(period);
     this.title = title;
 
-    this.chartService.fetchAccountAdHocCharts("tracks", from, to, 50)
+    this.chartService.fetchAccountAdHocCharts("tracks", from, to, limit)
       .pipe(take(1))
       .subscribe({
         next: response => {
@@ -82,7 +82,7 @@ export class ChartPeriodComponent {
       })
   }
 
-  private parsePeriod(period: string): [number, number, string] {
+  private parsePeriod(period: string): [number, number, number, string] {
     const periodParts = period.split("-");
 
     switch (periodParts.length) {
@@ -97,7 +97,7 @@ export class ChartPeriodComponent {
     }
   }
 
-  private buildYearPeriod(year: string): [number, number, string] {
+  private buildYearPeriod(year: string): [number, number, number, string] {
     const fromPattern = "YYYY-01-01T00:00:00.000Z".replace("YYYY", year);
     const fromDate = new Date(fromPattern);
     
@@ -107,10 +107,10 @@ export class ChartPeriodComponent {
     const from: number = getUnixTimestampFromDate(new Date(fromPattern));
     const to: number = getUnixTimestampFromDate(new Date(toDate.getTime() - 1));
   
-    return [from, to, year];
+    return [from, to, 50, year];
   }
 
-  private buildMonthPeriod(year: string, month: string): [number, number, string] {
+  private buildMonthPeriod(year: string, month: string): [number, number, number, string] {
     const fromPattern = "YYYY-MM-01T00:00:00.000Z"
       .replace("YYYY", year)
       .replace("MM", month.padStart(2, '0'));
@@ -125,10 +125,10 @@ export class ChartPeriodComponent {
 
     const title = `${fromDate.toLocaleString('default', { month: 'long' })} ${year}`;
   
-    return [from, to, title];
+    return [from, to, 20, title];
   }
 
-  private buildDayPeriod(year: string, month: string, day: string): [number, number, string] {
+  private buildDayPeriod(year: string, month: string, day: string): [number, number, number, string] {
     const fromPattern = "YYYY-MM-DDT00:00:00.000Z"
       .replace("YYYY", year)
       .replace("MM", month.padStart(2, '0'))
@@ -142,7 +142,7 @@ export class ChartPeriodComponent {
     const from: number = getUnixTimestampFromDate(new Date(fromPattern));
     const to: number = getUnixTimestampFromDate(new Date(toDate.getTime() - 1));
   
-    return [from, to, fromDate.toLocaleDateString()];
+    return [from, to, 10, fromDate.toLocaleDateString()];
   }
 
   private convertResponse(type: string, items: AccountChartItemApiDto<unknown>[]): ChartItem[] {
