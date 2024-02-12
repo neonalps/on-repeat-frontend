@@ -5,12 +5,12 @@ import { ActivatedRoute, NavigationEnd, NavigationSkipped, Router } from '@angul
 import { Store } from '@ngrx/store';
 import { AccountChartItemComponent, ChartItem } from '@src/app/components/account-chart-item/account-chart-item.component';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
-import { AccountChartItemApiDto, TrackApiDto } from '@src/app/models';
+import { AccountChartItemApiDto, ArtistApiDto, ChartApiDto, TrackApiDto } from '@src/app/models';
 import { ChartService } from '@src/app/services/chart/chart.service';
 import { hideSearch } from '@src/app/ui-state/store/ui-state.actions';
 import { hasText, pickImageFromArray } from '@src/app/util/common';
 import { getUnixTimestampFromDate } from '@src/app/util/date';
-import { PATH_PARAM_CHART_PERIOD_SLUG } from '@src/app/util/router';
+import { PATH_PARAM_CHART_PERIOD_SLUG, PATH_PARAM_CHART_TYPE } from '@src/app/util/router';
 import { take } from 'rxjs';
 
 @Component({
@@ -58,6 +58,7 @@ export class ChartPeriodComponent {
   }
 
   private loadChartPeriodDetails() {
+    const chartType = this.route.snapshot.paramMap.get(PATH_PARAM_CHART_TYPE) as string;
     const period = this.route.snapshot.paramMap.get(PATH_PARAM_CHART_PERIOD_SLUG) as string;
     if (!period || !hasText(period)) {
       throw new Error("Illegal period format in path param");
@@ -68,7 +69,7 @@ export class ChartPeriodComponent {
     const [from, to, limit, title] = this.parsePeriod(period);
     this.title = title;
 
-    this.chartService.fetchAccountAdHocCharts("tracks", from, to, limit)
+    this.chartService.fetchAccountAdHocCharts(chartType, from, to, limit)
       .pipe(take(1))
       .subscribe({
         next: response => {
@@ -149,6 +150,8 @@ export class ChartPeriodComponent {
     switch (type) {
       case "tracks":
         return this.convertTrackResponse(items as AccountChartItemApiDto<TrackApiDto>[]);
+      case "artists":
+        return this.convertArtistResponse(items as AccountChartItemApiDto<ArtistApiDto>[]);
       default:
         console.warn(`No handler defined for chart type ${type}`);
         return [];
@@ -170,6 +173,25 @@ export class ChartPeriodComponent {
         imageUrl: image !== null ? image.url : null,
         album: null,
         type: "track",
+      }
+    });
+  }
+
+  private convertArtistResponse(items: AccountChartItemApiDto<ArtistApiDto>[]): ChartItem[] {
+    return items.map(item => {
+      const image = pickImageFromArray(item.item.images, "small");
+      
+      return {
+        chartId: 0,
+        chartName: "",
+        itemId: item.item.id,
+        name: item.item.name,
+        place: item.place,
+        playCount: item.playCount,
+        artists: [],
+        imageUrl: image !== null ? image.url : null,
+        album: null,
+        type: "artist",
       }
     })
   }
