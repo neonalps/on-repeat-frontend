@@ -3,7 +3,7 @@
         <img loading="lazy" [src]="getImageUrl()" [attr.height]="getImageHeight()" [attr.width]="getImageWidth()"/>
     </div>
     <div class="track-details-container pl-2">
-        <div class="xs">{{ getPlayedAt() | date:'shortTime' }} </div>
+        <div class="xs">{{ getPlayedAt() | date:'HH:mm' }} </div>
         <div class="mt-3">
             <span class="bold">{{ getArtists() }}</span>
         </div>
