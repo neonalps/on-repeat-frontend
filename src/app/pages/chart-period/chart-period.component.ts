@@ -60,10 +60,6 @@ export class ChartPeriodComponent {
   private loadChartPeriodDetails() {
     const chartType = this.route.snapshot.paramMap.get(PATH_PARAM_CHART_TYPE) as string;
     const period = this.route.snapshot.paramMap.get(PATH_PARAM_CHART_PERIOD_SLUG) as string;
-    if (!period || !hasText(period)) {
-      throw new Error("Illegal period format in path param");
-    }
-
     this.isLoading = true;
 
     const [from, to, limit, title] = this.parsePeriod(period);
@@ -84,6 +80,15 @@ export class ChartPeriodComponent {
   }
 
   private parsePeriod(period: string): [number, number, number, string] {
+    if (!hasText(period)) {
+      return [
+        getUnixTimestampFromDate(new Date("1970-01-01T00:00:00.000Z")),
+        getUnixTimestampFromDate(new Date("2070-01-01T00:00:00.000Z")),
+        100,
+        "All-time",
+      ];
+    }
+
     const periodParts = period.split("-");
 
     switch (periodParts.length) {

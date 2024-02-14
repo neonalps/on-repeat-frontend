@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { navigateToTrackDetails } from '@src/app/util/router';
+import { navigateToArtistDetails, navigateToTrackDetails } from '@src/app/util/router';
 
 @Component({
   selector: 'app-account-chart-item',
@@ -46,6 +46,8 @@ export class AccountChartItemComponent {
   goToItem(): void {
     if (this.item.type === 'track') {
       navigateToTrackDetails(this.router, this.item.itemId, this.item.name);
+    } else if (this.item.type === 'artist') {
+      navigateToArtistDetails(this.router, this.item.itemId, this.item.name);
     }
   }
 

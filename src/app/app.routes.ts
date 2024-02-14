@@ -29,6 +29,11 @@ export const routes: Routes = [
         canActivate: [loggedInGuard],
     },
     { 
+        path: `charts/period/:${PATH_PARAM_CHART_TYPE}`, 
+        component: ChartPeriodComponent,
+        canActivate: [loggedInGuard],
+    },
+    { 
         path: `charts/:${PATH_PARAM_CHART_SLUG}`, 
         component: ChartDetailsComponent,
         canActivate: [loggedInGuard],
