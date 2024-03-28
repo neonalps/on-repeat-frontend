@@ -5,6 +5,11 @@
             <div class="title flex-auto mb-3">{{ 'charts.title' | $t }}</div>
         </section>
         <section class="page-content-main">
+            <div class="flex justify-content-center mt-2 mb-6">
+                <span class="inline-block mr-6 pointer">Generated</span>
+                <span class="inline-block pointer">Personal</span>
+            </div>
+
             <div *ngIf="isLoading; else loaded">
                 <app-loading />
             </div>

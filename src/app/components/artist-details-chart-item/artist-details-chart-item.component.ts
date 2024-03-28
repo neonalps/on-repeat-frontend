@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ChartItem } from '../account-chart-item/account-chart-item.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { navigateToChartDetails, navigateToTrackDetails } from '@src/app/util/router';
+import { navigateToTrackDetails } from '@src/app/util/router';
 
 @Component({
   selector: 'app-artist-details-chart-item',
@@ -29,8 +29,8 @@ export class ArtistDetailsChartItemComponent {
     return this.item.chartName;
   }
 
-  getPlace(): number {
-    return this.item.place;
+  getPlace(): number | string {
+    return this.item.place === 1 ? `🏆` : this.item.place;
   }
 
   goToItem(): void {

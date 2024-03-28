@@ -54,11 +54,17 @@
                         </div>
                     </div>
                 </section>
+                <ng-container *ngIf="!!getReleaseDate()">
+                    <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
+                        <div class="bold text-md pl-1 mb-4">{{ 'releaseDate' | $t }}</div>
+                        <div class="ml-1">{{ getReleaseDate() | date }}</div>
+                    </section>
+                </ng-container>
                 <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
                     <div class="bold text-md pl-1 mb-4">{{ 'played.history' | $t }}</div>
                     <div>
                         <div *ngFor="let entry of trackHistory" class="bg-color-dark-grey-lighter-20 rounded p-2 mt-2 flex justify-content-between">
-                            <div>{{ entry.playedAt | date:'medium' }}</div>
+                            <div>{{ entry.playedAt | date:'MMM d, y HH:mm' }}</div>
                             <div class="mr-2">
                                 <app-toggle-checkbox [title]="'includeInStatistics' | $t" [checked]="entry.includeInStatistics" (valueChange)="onToggleChange($event, entry)" />
                             </div>
