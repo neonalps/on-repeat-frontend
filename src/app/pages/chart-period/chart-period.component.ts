@@ -153,9 +153,9 @@ export class ChartPeriodComponent {
 
   private convertResponse(type: string, items: AccountChartItemApiDto<unknown>[]): ChartItem[] {
     switch (type) {
-      case "tracks":
+      case "track":
         return this.convertTrackResponse(items as AccountChartItemApiDto<TrackApiDto>[]);
-      case "artists":
+      case "artist":
         return this.convertArtistResponse(items as AccountChartItemApiDto<ArtistApiDto>[]);
       default:
         console.warn(`No handler defined for chart type ${type}`);

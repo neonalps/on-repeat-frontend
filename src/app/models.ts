@@ -147,6 +147,12 @@ export interface DetailedTrackApiDto {
     trackNumber: number | null;
     durationMs: number | null;
     charts?: DetailedTrackChartApiDto[];
+    releaseDate: ReleaseDateApiDto | null;
+}
+
+export interface ReleaseDateApiDto {
+    releaseDate: string;
+    precision: string;
 }
 
 export interface DetailedTrackChartApiDto {

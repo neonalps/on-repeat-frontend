@@ -14,7 +14,7 @@ import { hideSearch } from '@src/app/ui-state/store/ui-state.actions';
 import { hasText, isNotDefined, pickImageFromArray } from '@src/app/util/common';
 import { getEarliestDateOfArray, getLatestDateOfArray } from '@src/app/util/date';
 import { PATH_PARAM_TRACK_SLUG, navigateToArtistDetails, navigateToChartDetails, parseUrlSlug } from '@src/app/util/router';
-import { Subject, take, tap, throttleTime } from 'rxjs';
+import { Subject, take, throttleTime } from 'rxjs';
 
 interface SimpleArtist {
   id: number;
@@ -57,7 +57,7 @@ export class TrackDetailsComponent {
       .pipe(takeUntilDestroyed())
       .subscribe(value => {
         if (value instanceof NavigationEnd) {
-          this.loadTrackdetails();
+          this.loadTrackDetails();
         } else if (value instanceof NavigationSkipped) {
           this.store.dispatch(hideSearch());
         }
@@ -69,8 +69,9 @@ export class TrackDetailsComponent {
       ).subscribe(() => this.loadMore());
   }
 
-  loadTrackdetails(): void {
+  loadTrackDetails(): void {
     this.isLoading = true;
+    this.trackHistory = [];
     this.trackId = parseUrlSlug(this.route.snapshot.paramMap.get(PATH_PARAM_TRACK_SLUG) as string);
     this.trackService.fetchTrack(this.trackId).pipe(
       take(1)
@@ -144,6 +145,10 @@ export class TrackDetailsComponent {
 
   getLastPlayedAt(): Date | null {
     return this.track.playedInfo.lastPlayedAt;
+  }
+
+  getReleaseDate(): string | undefined {
+    return this.track.releaseDate ? this.track.releaseDate.releaseDate : undefined;
   }
 
   getChartEntryPlaceBackgroundColor(place: number): string {
