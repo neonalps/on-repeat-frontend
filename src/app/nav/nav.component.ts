@@ -7,7 +7,7 @@ import { AppLogoComponent } from '@src/app/app-logo/app-logo.component';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { selectAuthUser } from '@src/app/auth/store/auth.selectors';
-import { AccountChartApiDto, AlbumApiDto, ArtistApiDto, AuthUser, ChartApiDto, FullTextSearchResponseApiDto, SearchResultItemApiDto, TrackApiDto } from '@src/app/models';
+import { AccountChartApiDto, AlbumApiDto, ArtistApiDto, AuthUser, FullTextSearchResponseApiDto, SearchResultItemApiDto, TrackApiDto } from '@src/app/models';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { AuthService } from '@src/app/auth/auth.service';

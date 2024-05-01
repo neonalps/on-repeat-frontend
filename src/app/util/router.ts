@@ -1,4 +1,5 @@
 import { Router } from "@angular/router";
+import { isDefined } from "@src/app/util/common";
 
 export const PATH_PARAM_ARTIST_SLUG = "artistSlug";
 export const PATH_PARAM_TRACK_SLUG = "trackSlug";
@@ -16,6 +17,19 @@ export function navigateToArtistDetails(router: Router, artistId: number, artist
 
 export function navigateToChartDetails(router: Router, chartId: number, chartName: string): void {
     router.navigate(["/charts", createUrlSlug(chartId, chartName)]);
+}
+
+export function navigateToRecentlyPlayed(router: Router, from?: string, to?: string): void {
+    const params: any = {};
+    if (isDefined(from)) {
+        params["from"] = from;
+    }
+
+    if (isDefined(to)) {
+        params["to"] = to;
+    }
+
+    router.navigate(["/recently-played"], { queryParams: params });
 }
 
 export function parseUrlSlug(slug: string): number {
