@@ -59,3 +59,11 @@ export function getLatestDateOfArray(dates: Date[]): Date | null {
     
     return currentLatest;
 }
+
+export function getStartOfDayIsoString(date: string): string {
+    return `${date}T00:00:00.000Z`;
+}
+
+export function getEndOfDayIsoString(date: string): string {
+    return `${date}T23:59:59.999Z`;
+}

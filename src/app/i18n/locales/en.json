@@ -26,7 +26,7 @@
     "logout.title": "Logout",
     "permissions": "Permissions",
     "played.first": "First played",
-    "played.history": "Played history",
+    "played.history.your": "Your played history",
     "played.last": "Last played",
     "played.stats": "Played stats",
     "played.times": "Times played",
@@ -40,6 +40,7 @@
     "search.empty": "No results could be found for your search 😢",
     "signed.in.as": "Signed in as",
     "spoilers": "Spoilers",
+    "times": "times",
     "tracks": "Tracks",
     "tracks.favourite": "Favourite tracks"
 }
