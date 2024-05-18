@@ -42,6 +42,21 @@ header {
     max-width: 100%;
 }
 
+.tab {
+    color: var(--white);
+    font-weight: bold;
+    transition: color .25s ease-in-out;
+}
+
+.tab:hover {
+    cursor: pointer;
+    color: var(--primary);
+}
+
+.tab-active {
+    color: var(--primary);
+}
+
 .nav-container {
     display: flex;
     align-items: center;

@@ -41,7 +41,7 @@
                         </div>
                         <ng-container *ngIf="getAllTimeTrackCharts().length > 0; else emptyList">
                             <ng-container *ngFor="let chartItem of getAllTimeTrackCharts()">
-                                <app-account-chart-item [item]="chartItem" (click)="goToTrack(chartItem.itemId, chartItem.name)" />
+                                <app-account-chart-item [item]="chartItem" [hidePlace]="true" [hidePlayCount]="true" (click)="goToTrack(chartItem.itemId, chartItem.name)" />
                             </ng-container>
                         </ng-container>
                         <ng-template #emptyList>Nothing</ng-template>
@@ -52,7 +52,7 @@
                         </div>
                         <ng-container *ngIf="getAllTimeArtistCharts().length > 0; else emptyList">
                             <ng-container *ngFor="let chartItem of getAllTimeArtistCharts()">
-                                <app-account-chart-item [item]="chartItem" (click)="goToArtist(chartItem.itemId, chartItem.name)" />
+                                <app-account-chart-item [item]="chartItem" [hidePlace]="true" [hidePlayCount]="true" (click)="goToArtist(chartItem.itemId, chartItem.name)" />
                             </ng-container>
                         </ng-container>
                         <ng-template #emptyList>Nothing</ng-template>

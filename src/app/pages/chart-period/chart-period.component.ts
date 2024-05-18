@@ -5,11 +5,10 @@ import { ActivatedRoute, NavigationEnd, NavigationSkipped, Router } from '@angul
 import { Store } from '@ngrx/store';
 import { AccountChartItemComponent, ChartItem } from '@src/app/components/account-chart-item/account-chart-item.component';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
-import { AccountChartItemApiDto, ArtistApiDto, ChartApiDto, TrackApiDto } from '@src/app/models';
+import { AccountChartItemApiDto, ArtistApiDto, TrackApiDto } from '@src/app/models';
 import { ChartService } from '@src/app/services/chart/chart.service';
 import { hideSearch } from '@src/app/ui-state/store/ui-state.actions';
 import { hasText, pickImageFromArray } from '@src/app/util/common';
-import { getUnixTimestampFromDate } from '@src/app/util/date';
 import { PATH_PARAM_CHART_PERIOD_SLUG, PATH_PARAM_CHART_TYPE } from '@src/app/util/router';
 import { take } from 'rxjs';
 
@@ -79,11 +78,11 @@ export class ChartPeriodComponent {
       })
   }
 
-  private parsePeriod(period: string): [number, number, number, string] {
+  private parsePeriod(period: string): [Date, Date, number, string] {
     if (!hasText(period)) {
       return [
-        getUnixTimestampFromDate(new Date("1970-01-01T00:00:00.000Z")),
-        getUnixTimestampFromDate(new Date("2070-01-01T00:00:00.000Z")),
+        new Date("1970-01-01T00:00:00.000Z"),
+        new Date("2070-01-01T00:00:00.000Z"),
         100,
         "All-time",
       ];
@@ -103,20 +102,20 @@ export class ChartPeriodComponent {
     }
   }
 
-  private buildYearPeriod(year: string): [number, number, number, string] {
+  private buildYearPeriod(year: string): [Date, Date, number, string] {
     const fromPattern = "YYYY-01-01T00:00:00.000Z".replace("YYYY", year);
     const fromDate = new Date(fromPattern);
     
     const toDate = new Date(fromDate);
     toDate.setFullYear(toDate.getFullYear() + 1);
 
-    const from: number = getUnixTimestampFromDate(new Date(fromPattern));
-    const to: number = getUnixTimestampFromDate(new Date(toDate.getTime() - 1));
+    const from = new Date(fromPattern);
+    const to = new Date(toDate.getTime() - 1);
   
     return [from, to, 50, year];
   }
 
-  private buildMonthPeriod(year: string, month: string): [number, number, number, string] {
+  private buildMonthPeriod(year: string, month: string): [Date, Date, number, string] {
     const fromPattern = "YYYY-MM-01T00:00:00.000Z"
       .replace("YYYY", year)
       .replace("MM", month.padStart(2, '0'));
@@ -126,15 +125,15 @@ export class ChartPeriodComponent {
     const toDate = new Date(fromDate);
     toDate.setMonth(toDate.getMonth() + 1);
 
-    const from: number = getUnixTimestampFromDate(new Date(fromPattern));
-    const to: number = getUnixTimestampFromDate(new Date(toDate.getTime() - 1));
+    const from = new Date(fromPattern);
+    const to = new Date(toDate.getTime() - 1);
 
     const title = `${fromDate.toLocaleString('default', { month: 'long' })} ${year}`;
   
     return [from, to, 20, title];
   }
 
-  private buildDayPeriod(year: string, month: string, day: string): [number, number, number, string] {
+  private buildDayPeriod(year: string, month: string, day: string): [Date, Date, number, string] {
     const fromPattern = "YYYY-MM-DDT00:00:00.000Z"
       .replace("YYYY", year)
       .replace("MM", month.padStart(2, '0'))
@@ -145,8 +144,8 @@ export class ChartPeriodComponent {
     const toDate = new Date(fromDate);
     toDate.setDate(toDate.getDate() + 1);
 
-    const from: number = getUnixTimestampFromDate(new Date(fromPattern));
-    const to: number = getUnixTimestampFromDate(new Date(toDate.getTime() - 1));
+    const from = new Date(fromPattern);
+    const to = new Date(toDate.getTime() - 1);
   
     return [from, to, 10, fromDate.toLocaleDateString()];
   }

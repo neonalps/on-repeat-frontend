@@ -19,6 +19,15 @@ export function navigateToChartDetails(router: Router, chartId: number, chartNam
     router.navigate(["/charts", createUrlSlug(chartId, chartName)]);
 }
 
+export function navigateToAdHocChartDetails(router: Router, type: string, year?: number | null, month?: number | null): void {
+    const calendarParts = [
+        year,
+        month
+    ].filter(isDefined).join("-");
+
+    router.navigate(["/charts/period", type, calendarParts].filter(item => !!item));
+}
+
 export function navigateToRecentlyPlayed(router: Router, from?: string, to?: string): void {
     const params: any = {};
     if (isDefined(from)) {

@@ -6,28 +6,14 @@
         </section>
         <section class="page-content-main">
             <div class="flex justify-content-center mt-2 mb-6">
-                <span class="inline-block mr-6 pointer">Generated</span>
-                <span class="inline-block pointer">Personal</span>
+                <span class="inline-block mr-6 tab" [ngClass]="{ 'tab-active': getSelectedChart() === 'generated' }" (click)="selectGenerated()">{{ 'charts.generated' | $t }}</span>
+                <span class="inline-block tab" [ngClass]="{ 'tab-active': getSelectedChart() === 'personal' }" (click)="selectPersonal()">{{ 'charts.personal' | $t }}</span>
             </div>
 
-            <div *ngIf="isLoading; else loaded">
-                <app-loading />
+            <div>
+                <app-chart-generated *ngIf="getSelectedChart() === 'generated'"></app-chart-generated>
+                <app-chart-personal *ngIf="getSelectedChart() === 'personal'"></app-chart-personal>
             </div>
-            <ng-template #loaded>
-                <ng-container *ngIf="charts.length > 0; else emptyList">
-                    <ng-container *ngFor="let chart of charts">
-                        <app-account-chart [accountChart]="chart" />
-                    </ng-container>
-                </ng-container>
-                <ng-template #emptyList>
-                    <div class="bg-color-dark-grey-lighter-20 rounded-lg p-4">
-                        <div>{{ 'charts.empty' | $t }}</div>
-                        <div>
-                            <div class="button button-primary" role="button" (click)="addChart()">{{ 'charts.add' | $t }}</div>
-                        </div>
-                    </div>
-                </ng-template>
-            </ng-template>
         </section>
     </section>
     <section class="large-screen-placeholder"></section>
