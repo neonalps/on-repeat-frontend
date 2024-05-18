@@ -33,6 +33,18 @@ export function getArtistsString(artists: ArtistApiDto[]): string {
     return artists.map(artist => artist.name).join(", ");
 }
 
+export function milliSecondsToMinutesAndSeconds(ms: number): [number, number] {
+    if (ms === 0) {
+        return [0, 0];
+    }
+
+    const start = Math.floor(ms / 1000);
+    const minutes = Math.floor(start / 60);
+    const seconds = start % 60;
+
+    return [minutes, seconds];
+}
+
 export type ImageSize = 'small' | 'medium' | 'large';
 export function pickImageFromArray(images: ImageApiDto[] | undefined, mode: ImageSize): ImageApiDto | null {
     if (isNotDefined(images) || (images as ImageApiDto[]).length === 0) {

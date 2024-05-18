@@ -10,14 +10,15 @@
                     <div class="track-details-top-image image-container flex justify-content-center align-self-center">
                         <img loading="eager" [src]="getImageUrl()" />
                     </div>
-                    <div class="ml-6 align-self-center">
+                    <div class="ml-6 flex-grow align-self-center">
                         <div>
                             <ng-container *ngFor="let artist of getArtists()">
                                 <span class="text-lg pointer hover:text-primary inline-block mr-3" role="link" (click)="goToArtist(artist.id, artist.name)">{{ artist.name }}</span>
                             </ng-container>
                         </div>
                         <div class="bold text-xl">{{ getName() }}</div>
-                        <div class="text-sm mt-3">{{ getAlbum() }}</div>
+                        <div class="mt-1 text-sm">{{ getAlbum() }}</div>
+                        <div class="mt-3 text-xs">{{ getDuration() }}</div>
                     </div>
                 </section>
                 <ng-container *ngIf="hasChartEntries()">
@@ -54,10 +55,10 @@
                         </div>
                     </div>
                 </section>
-                <ng-container *ngIf="!!getReleaseDate()">
+                <ng-container *ngIf="!!getReleaseDateString()">
                     <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
                         <div class="bold text-md pl-1 mb-4">{{ 'releaseDate' | $t }}</div>
-                        <div class="ml-1">{{ getReleaseDate() | date }}</div>
+                        <div class="ml-1">{{ getReleaseDateString() }}</div>
                     </section>
                 </ng-container>
                 <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">

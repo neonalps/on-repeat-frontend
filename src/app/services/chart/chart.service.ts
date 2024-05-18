@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment';
-import { AccountChartApiDto, AccountChartDetailsApiDto, AccountChartItemApiDto, ChartApiDto, PaginatedResponseDto } from '@src/app/models';
+import { AccountChartApiDto, AccountChartDetailsApiDto, AccountChartItemApiDto, ChartApiDto, GeneratedChartApiDto, PaginatedResponseDto } from '@src/app/models';
 import { API_QUERY_PARAM_NEXT_PAGE_KEY, isDefined } from '@src/app/util/common';
 import { Observable } from 'rxjs';
 
@@ -29,14 +29,14 @@ export class ChartService {
     return this.http.get<AccountChartDetailsApiDto<unknown>>(requestUrl);
   }
 
-  public fetchAccountAdHocCharts(type: string, from: number, to?: number, limit?: number): Observable<ChartApiDto<AccountChartItemApiDto<unknown>>> {
+  public fetchAccountAdHocCharts(type: string, from: Date, to?: Date, limit?: number): Observable<ChartApiDto<AccountChartItemApiDto<unknown>>> {
     const queryParams = new URLSearchParams({
-      from: from.toString(),
-      type
+      from: from.toISOString(),
+      type,
     });
 
     if (!!to) {
-      queryParams.append("to", to.toString());
+      queryParams.append("to", to.toISOString());
     }
 
     if (!!limit) {
@@ -45,6 +45,11 @@ export class ChartService {
 
     const requestUrl = `${ChartService.CHARTS_URL}/ad-hoc?${queryParams.toString()}`;
     return this.http.get<ChartApiDto<AccountChartItemApiDto<unknown>>>(requestUrl);
+  }
+
+  public fetchGeneratedCharts(): Observable<PaginatedResponseDto<GeneratedChartApiDto>> {
+    const requestUrl = `${ChartService.CHARTS_URL}/generated`;
+    return this.http.get<PaginatedResponseDto<GeneratedChartApiDto>>(requestUrl);
   }
 
 }

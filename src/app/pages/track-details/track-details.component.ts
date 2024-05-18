@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, NavigationSkipped, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { DetailedTrackApiDto, DetailedTrackChartApiDto, ImageApiDto, PlayedHisto
 import { PlayedTrackService, TrackHistoryOnDate } from '@src/app/services/played-track/played-track.service';
 import { TrackService } from '@src/app/services/track/track.service';
 import { hideSearch } from '@src/app/ui-state/store/ui-state.actions';
-import { isNotDefined, pickImageFromArray } from '@src/app/util/common';
+import { isNotDefined, milliSecondsToMinutesAndSeconds, pickImageFromArray } from '@src/app/util/common';
 import { getEarliestDateOfArray, getEndOfDayIsoString, getGroupableDateString, getLatestDateOfArray, getStartOfDayIsoString } from '@src/app/util/date';
 import { PATH_PARAM_TRACK_SLUG, navigateToArtistDetails, navigateToChartDetails, navigateToRecentlyPlayed, parseUrlSlug } from '@src/app/util/router';
 import { Subject, take, throttleTime } from 'rxjs';
@@ -27,11 +27,14 @@ interface SimpleArtist {
   selector: 'app-track-details',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     I18nPipe, 
     LoadingComponent, 
     ScrollNearEndDirective,
     ToggleCheckboxComponent,
+  ],
+  providers: [
+    DatePipe,
   ],
   templateUrl: './track-details.component.html',
   styleUrl: './track-details.component.css'
@@ -48,6 +51,7 @@ export class TrackDetailsComponent {
   private scrollEndSubject = new Subject<void>();
 
   constructor(
+    private readonly datePipe: DatePipe,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly store: Store,
@@ -186,8 +190,22 @@ export class TrackDetailsComponent {
     return this.track.playedInfo.lastPlayedAt;
   }
 
-  getReleaseDate(): string | undefined {
-    return this.track.releaseDate ? this.track.releaseDate.releaseDate : undefined;
+  getReleaseDateString(): string | null {
+    if (!this.track.releaseDate) {
+      return null;
+    }
+
+    const releaseDate = this.track.releaseDate.releaseDate;
+    const precision = this.track.releaseDate.precision;
+    if (precision === "day") {
+      return this.datePipe.transform(releaseDate, "MMMM d, y");
+    } else if (precision === "month") {
+      return this.datePipe.transform(releaseDate, "MMMM y");
+    } else if (precision === "year") {
+      return this.datePipe.transform(releaseDate, "y");
+    } else {
+      return releaseDate;
+    }
   }
 
   getChartEntryPlaceBackgroundColor(place: number): string {
@@ -196,6 +214,18 @@ export class TrackDetailsComponent {
 
   getChartEntries(): DetailedTrackChartApiDto[] {
     return this.hasChartEntries() ? this.track.charts as DetailedTrackChartApiDto[] : [];
+  }
+
+  getDuration(): string | null {
+    const duration = this.track.durationMs;
+    if (isNotDefined(duration)) {
+      return null;
+    }
+
+    const minutesAndSeconds = milliSecondsToMinutesAndSeconds(duration as number);
+
+    const secondsString = `${minutesAndSeconds[1]}`.padStart(2, '0');
+    return `${minutesAndSeconds[0]}:${secondsString} min`;
   }
 
   getTrackHistoryOnDate() {
