@@ -1,11 +1,15 @@
 .place-container {
-    flex: 0 1 13%;
+    flex: 0 0 13%;
 }
 
 .image-container {
-    flex: 0 1 23%;
+    flex: 0 0 23%;
 }
 
 .details-container {
-    flex: 1 0 auto;
+    flex: 1 0 40%;
+}
+
+.count-container {
+    flex: 0 0 auto;
 }

@@ -13,7 +13,7 @@
                 <ng-container *ngFor="let playedTrackGroup of playedTracksOnDate">
                     <div>
                         <div class="sticky top-0 z-10 sticky-header">
-                            <div class="relative bold">{{ playedTrackGroup.date | date }}</div>
+                            <div class="relative bold">{{ playedTrackGroup.date | date:'EEE MMM d, YYY' }}</div>
                         </div>
                         <app-played-track *ngFor="let playedTrack of playedTrackGroup.tracks" [playedTrack]="playedTrack" (click)="goToTrack(playedTrack.track.id, playedTrack.track.name)" />
                     </div>

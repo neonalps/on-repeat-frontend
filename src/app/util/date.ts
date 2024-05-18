@@ -11,6 +11,10 @@ export function getDateFromUnixTimestamp(unix: number): Date {
     return new Date(unix * 1000);
 }
 
+export function getUnixTimestampFromDate(input: Date): number {
+    return Math.floor(input.getTime() / 1000);
+}
+
 export function getGroupableDateString(input: Date): string {
     validateDefined(input, "input");
 
@@ -54,4 +58,12 @@ export function getLatestDateOfArray(dates: Date[]): Date | null {
     }
     
     return currentLatest;
+}
+
+export function getStartOfDayIsoString(date: string): string {
+    return `${date}T00:00:00.000Z`;
+}
+
+export function getEndOfDayIsoString(date: string): string {
+    return `${date}T23:59:59.999Z`;
 }

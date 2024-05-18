@@ -1,4 +1,4 @@
-<section class="page-content large-screen">
+<section class="page-content large-screen" appScrollNearEnd (nearEnd)="onNearEndScroll()">
     <section class="large-screen-placeholder"></section>
     <section class="content large-screen-main">
         <div *ngIf="isLoading; else loaded">
@@ -10,14 +10,15 @@
                     <div class="track-details-top-image image-container flex justify-content-center align-self-center">
                         <img loading="eager" [src]="getImageUrl()" />
                     </div>
-                    <div class="ml-6 align-self-center">
+                    <div class="ml-6 flex-grow align-self-center">
                         <div>
                             <ng-container *ngFor="let artist of getArtists()">
                                 <span class="text-lg pointer hover:text-primary inline-block mr-3" role="link" (click)="goToArtist(artist.id, artist.name)">{{ artist.name }}</span>
                             </ng-container>
                         </div>
                         <div class="bold text-xl">{{ getName() }}</div>
-                        <div class="text-sm mt-3">{{ getAlbum() }}</div>
+                        <div class="mt-1 text-sm">{{ getAlbum() }}</div>
+                        <div class="mt-3 text-xs">{{ getDuration() }}</div>
                     </div>
                 </section>
                 <ng-container *ngIf="hasChartEntries()">
@@ -54,21 +55,38 @@
                         </div>
                     </div>
                 </section>
+                <ng-container *ngIf="!!getReleaseDateString()">
+                    <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
+                        <div class="bold text-md pl-1 mb-4">{{ 'releaseDate' | $t }}</div>
+                        <div class="ml-1">{{ getReleaseDateString() }}</div>
+                    </section>
+                </ng-container>
                 <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 px-2 rounded-lg">
-                    <div class="bold text-md pl-1 mb-4">{{ 'played.history' | $t }}</div>
-                    <ng-container *ngIf="isTrackHistoryLoading; else loadedHistory">
-                        <app-loading />
-                    </ng-container>
-                    <ng-template #loadedHistory>
-                        <div>
-                            <div *ngFor="let entry of trackHistory" class="bg-color-dark-grey-lighter-20 rounded p-2 mt-2 flex justify-content-between">
-                                <div>{{ entry.playedAt | date:'medium' }}</div>
-                                <div class="mr-2">
-                                    <app-toggle-checkbox [title]="'includeInStatistics' | $t" [checked]="entry.includeInStatistics" (valueChange)="onToggleChange($event, entry)" />
+                    <div class="bold text-md pl-1 mb-4">{{ 'played.history.your' | $t }}</div>
+                    <div>
+                        <ng-container *ngIf="trackHistoryOnDate.length > 0; else emptyList">
+                            <ng-container *ngFor="let trackHistoryGroup of getTrackHistoryOnDate()">
+                                <div class="bg-color-dark-grey-lighter-20 p-2 mt-4 rounded">
+                                    <div class="flex justify-content-between">
+                                        <div class="bold mb-2 pointer hover:text-primary" (click)="goToDate(trackHistoryGroup.date)">{{ trackHistoryGroup.date | date:'EEE MMM d, YYY' }}</div>
+                                        <div class="text-sm mr-2">{{ getTimesPlayedOnDay(trackHistoryGroup.historyItems) }}</div>
+                                    </div>
+                                    <div *ngFor="let entry of trackHistoryGroup.historyItems" class="flex justify-content-between mt-3">
+                                        <div class="ml-1">{{ entry.playedAt | date:'HH:mm' }}</div>
+                                        <div class="mr-2">
+                                            <app-toggle-checkbox [title]="'includeInStatistics' | $t" [checked]="entry.includeInStatistics" (valueChange)="onToggleChange($event, entry)" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </ng-template>
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #emptyList>
+                            <div class="mt-8">{{ 'recentlyPlayedTracks.empty' | $t }}</div>
+                        </ng-template>    
+                        <ng-container *ngIf="isTrackHistoryLoading">
+                            <app-loading />
+                        </ng-container>
+                    </div>
                 </section>
             </section>
         </ng-template>

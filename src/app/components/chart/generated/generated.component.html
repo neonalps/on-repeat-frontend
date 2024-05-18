@@ -1,0 +1,19 @@
+<div>
+    <div *ngIf="isLoading; else loaded">
+        <app-loading />
+    </div>
+    <ng-template #loaded>
+        <ng-container *ngIf="charts.length > 0; else emptyList">
+            <ng-container *ngFor="let chart of charts">
+                <div class="px-4 py-3 bg-color-dark-grey-lighter-10 hover:bg-color-dark-grey-lighter-20 transition-colors rounded-md pointer mb-4" (click)="goToChartDetails(chart)">
+                    <div class="text-lg bold">{{ chart.name }}</div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <ng-template #emptyList>
+            <div class="bg-color-dark-grey-lighter-20 rounded-lg p-4">
+                <div>{{ 'charts.generated.empty' | $t }}</div>
+            </div>
+        </ng-template>
+    </ng-template>
+</div>

@@ -147,6 +147,20 @@ export interface DetailedTrackApiDto {
     trackNumber: number | null;
     durationMs: number | null;
     charts?: DetailedTrackChartApiDto[];
+    releaseDate: ReleaseDateApiDto | null;
+}
+
+export interface ReleaseDateApiDto {
+    releaseDate: string;
+    precision: string;
+}
+
+export interface GeneratedChartApiDto {
+    name: string | null;
+    year: number | null;
+    month: number | null;
+    day: number | null;
+    type: string;
 }
 
 export interface DetailedTrackChartApiDto {
@@ -177,6 +191,17 @@ export interface DetailedArtistApiDto {
     playedInfo: PlayedInfoApiDto;
     externalUrls: Record<string, string>;
     images: ImageApiDto[];
+    charts?: DetailedArtistChartApiDto[];
+}
+
+export interface DetailedArtistChartApiDto {
+    chart: {
+        id: number;
+        name: string;
+    },
+    place: number;
+    playCount: number | null;
+    track: TrackApiDto;
 }
 
 export interface AccountChartApiDto {
@@ -198,4 +223,22 @@ export interface AccountChartItemApiDto<T> {
 export interface AccountChartDetailsApiDto<T> {
     accountChart: AccountChartApiDto;
     items: AccountChartItemApiDto<T>[];
+}
+
+export interface FullTextSearchResponseApiDto {
+    results: SearchResultItemApiDto[];
+}
+
+export interface SearchResultItemApiDto {
+    type: string;
+    item: TrackApiDto | AlbumApiDto | ArtistApiDto | AccountChartApiDto;
+}
+
+export interface ArtistPlayedTrackApiDto {
+    id: number;
+    name: string;
+    href: string;
+    album: AlbumApiDto | null;
+    additionalArtists: ArtistApiDto[];
+    timesPlayed: number;
 }

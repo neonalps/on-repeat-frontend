@@ -1,0 +1,16 @@
+<div class="px-1 py-3 mt-4 flex bg-color-dark-grey-lighter-10 hover:bg-color-dark-grey-lighter-20 transition-colors rounded-md pointer" (click)="goToItem()">
+    <div class="charts-container align-items-center">
+        <div class="flex justify-content-center">
+            <div class="flex flex-col">
+                <div class="text-xs px-2 py-1 bg-color-dark-grey-lighter-30 mb-2 rounded">{{ getChartName() }}</div>
+                <div class="inline-block text-xl bold align-self-center">{{ getPlace() }}</div    >
+            </div>
+        </div>
+    </div>
+    <div class="image-container flex-auto flex justify-content-center align-self-center px-2">
+        <img loading="lazy" [src]="getImageUrl()"/>
+    </div>
+    <div class="details-container pl-2 flex align-items-center">
+        <div>{{ getName() }}</div>
+    </div>
+</div>

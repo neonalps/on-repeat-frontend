@@ -1,0 +1,11 @@
+.charts-container {
+    flex: 0 0 28%;
+}
+
+.image-container {
+    flex: 0 0 20%;
+}
+
+.details-container {
+    flex: 0 0 50%;
+}

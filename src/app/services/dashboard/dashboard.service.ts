@@ -69,6 +69,8 @@ export class DashboardService {
     const track = item as AccountChartItemApiDto<TrackApiDto>;
 
     return {
+      chartId: 0,
+      chartName: "",
       place: item.place,
       itemId: track.item.id,
       name: track.item.name,
@@ -84,6 +86,8 @@ export class DashboardService {
     const artist = item as AccountChartItemApiDto<ArtistApiDto>;
 
     return {
+      chartId: 0,
+      chartName: "",
       place: item.place,
       itemId: artist.item.id,
       name: artist.item.name,
