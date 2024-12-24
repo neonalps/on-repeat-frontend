@@ -5,7 +5,6 @@
     </span>
     <nav class="nav" [ngClass]="{'active': (menuVisible$ | async) === true}">
         <ul class="nav--ul__one">
-            <li class="nav-link"><a>{{ 'home.title' | $t }}</a></li>
             <li class="nav-link"><a [routerLink]="['/dashboard']">{{ 'dashboard.title' | $t }}</a></li>
             <li class="nav-link"><a [routerLink]="['/charts']">{{ 'charts.title' | $t }}</a></li>
             <li class="nav-link"><a [routerLink]="['/recently-played']">{{ 'recentlyPlayedTracks.title' | $t }}</a></li>

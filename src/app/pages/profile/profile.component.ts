@@ -7,9 +7,9 @@ import { AccountTokenService } from '@src/app/account-tokens/account-token.servi
 import { selectAuthUser } from '@src/app/auth/store/auth.selectors';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
-import { AccountTokenApiDto, AuthUser, OAuthConfig, PaginatedResponseDto } from '@src/app/models';
+import { AccountJobApiDto, AccountTokenApiDto, AuthUser, OAuthConfig, PaginatedResponseDto } from '@src/app/models';
 import { AppState } from '@src/app/store.index';
-import { isDefined } from '@src/app/util/common';
+import { isDefined, isNotDefined } from '@src/app/util/common';
 import { filter, first, take } from 'rxjs';
 import { environment } from '@src/environments/environment';
 import { OAuthContext } from '@src/app/oauth/spotify/oauth.spotify.component';
@@ -17,11 +17,14 @@ import { encode } from '@src/app/util/base64';
 import { AccountTokenComponent } from '@src/app/components/account-token/account-token.component';
 import { ModalEvent, ModalOptions, ModalService } from '@src/app/modal/modal.service';
 import { TranslationService } from '@src/app/i18n/translation.service';
+import { AccountJobComponent } from '@src/app/components/account-job/account-job.component';
+import { AccountJobService } from '@src/app/account-jobs/account-job.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
+    AccountJobComponent,
     AccountTokenComponent,
     CommonModule, 
     I18nPipe, 
@@ -31,11 +34,14 @@ import { TranslationService } from '@src/app/i18n/translation.service';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
+  accountJobs: AccountJobApiDto[] = [];
+  accountJobsLoading: boolean = false;
   accountTokens: AccountTokenApiDto[] = [];
-  loading: boolean = false;
+  accountTokensLoading: boolean = false;
   username: string | null = null;
 
   constructor(
+    private readonly accountJobService: AccountJobService,
     private readonly accountTokenService: AccountTokenService,
     private readonly modalService: ModalService,
     private readonly store: Store<AppState>,
@@ -48,6 +54,7 @@ export class ProfileComponent {
       });
 
       this.loadAccountTokens();
+      this.loadAccountJobs();
   }
 
   connectSpotify(): void {
@@ -88,8 +95,34 @@ export class ProfileComponent {
       });
   }
 
+  disableAccountJob(accountJobId: number): void {
+    this.accountJobService.disableAccountJob(accountJobId)
+      .pipe(first())
+      .subscribe({
+        next: (updatedAccountJob: AccountJobApiDto) => {
+          this.replaceAccountJob(updatedAccountJob);
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error(error);
+        },
+      });
+  }
+
+  enableAccountJob(accountJobId: number): void {
+    this.accountJobService.enableAccountJob(accountJobId)
+      .pipe(first())
+      .subscribe({
+        next: (updatedAccountJob: AccountJobApiDto) => {
+          this.replaceAccountJob(updatedAccountJob);
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error(error);
+        },
+      });
+  }
+
   handleDeleteAccountToken(accountTokenId: string): void {
-    this.loading = true;
+    this.accountTokensLoading = true;
 
     this.accountTokenService.deleteAccountToken(accountTokenId)
       .pipe(first())
@@ -99,25 +132,55 @@ export class ProfileComponent {
         },
         error: (error: HttpErrorResponse) => {
           console.error(error);
-          this.loading = false;
+          this.accountTokensLoading = false;
         }
       })
   }
 
+  private loadAccountJobs(): void {
+    this.accountJobsLoading = true;
+
+    this.accountJobService.fetchAccountJobs()
+      .pipe(first())
+      .subscribe({
+        next: (response: PaginatedResponseDto<AccountJobApiDto>) => {
+          this.accountJobs = response.items;
+          this.accountJobsLoading = false;
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error(error);
+          this.accountJobsLoading = false;
+        } 
+      });
+  }
+
   private loadAccountTokens(): void {
-    this.loading = true;
+    this.accountTokensLoading = true;
 
     this.accountTokenService.fetchAccountTokens()
       .pipe(first())
       .subscribe({
         next: (response: PaginatedResponseDto<AccountTokenApiDto>) => {
           this.accountTokens = response.items;
-          this.loading = false;
+          this.accountTokensLoading = false;
         },
         error: (error: HttpErrorResponse) => {
           console.error(error);
-          this.loading = false;
+          this.accountTokensLoading = false;
         } 
       });
+  }
+
+  private replaceAccountJob(accountJobToReplace: AccountJobApiDto): void {
+    if (isNotDefined(accountJobToReplace)) {
+      return;
+    }
+
+    const existingAccountJobIdx = this.accountJobs.findIndex(job => job.id === accountJobToReplace.id);
+    if (existingAccountJobIdx === -1) {
+      return;
+    }
+
+    this.accountJobs[existingAccountJobIdx] = accountJobToReplace;
   }
 }
