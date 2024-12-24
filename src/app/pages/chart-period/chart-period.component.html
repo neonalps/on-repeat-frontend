@@ -11,6 +11,7 @@
                 </section>
             </section>
             <section class="page-content-main">
+                <div class="text-lg mb-4">{{ getTimesPlayedText() }}</div>
                 <ng-container *ngFor="let item of getChartItems()">
                     <app-account-chart-item [item]="item"/>
                 </ng-container>

@@ -47,6 +47,7 @@ export interface TrackApiDto {
     href: string;
     album: AlbumApiDto | null;
     artists: ArtistApiDto[];
+    durationMs: number;
 }
 
 export interface AlbumApiDto {
@@ -72,6 +73,17 @@ export interface ArtistApiDto {
 export interface MusicProviderApiDto {
     id: number;
     name: string;
+}
+
+export interface AccountJobApiDto {
+    id: number;
+    displayName: string;
+    intervalSeconds: number;
+    failureCount: number;
+    enabled: boolean;
+    createdAt: Date;
+    lastSuccessfulExecution?: Date;
+    nextScheduledRun?: Date;
 }
 
 export interface AccountTokenApiDto {
@@ -111,6 +123,7 @@ export interface ChartApiDto<T> {
     type: string;
     from?: Date;
     to?: Date;
+    stats?: ChartPeriodStats;
     items: T[];
 }
 
@@ -126,6 +139,10 @@ export interface ChartArtistApiDto {
     delta: number | null;
     artist: ArtistApiDto;
     timesPlayed: number;
+}
+
+export interface ChartPeriodStats {
+    tracksPlayed: number;
 }
 
 export interface PlayedStatsApiDto {

@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
   selector: 'app-chart-generated',
   standalone: true,
   imports: [
-    AccountChartComponent, 
     CommonModule,
     I18nPipe, 
     LoadingComponent,

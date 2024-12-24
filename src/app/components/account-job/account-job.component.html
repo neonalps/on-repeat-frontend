@@ -1,0 +1,31 @@
+<div class="bg-color-dark-grey-lighter-10 p-2 rounded-lg">
+    <div class="flex justify-content-between">
+        <div class="text-lg bold mb-5">{{ getDisplayName() }}</div>
+    </div>
+
+    <div>
+        <div class="uppercase text-xs mb-2">{{ 'enabled' | $t }}</div>
+        <div>{{ getEnabledText() }}</div>
+    </div>
+
+    <div class="mt-5">
+        <div class="uppercase text-xs mb-2">{{ 'createdAt' | $t }}</div>
+        <div>{{ getCreatedAt() | date }}</div>
+    </div>
+
+    <div class="mt-5">
+        <div class="uppercase text-xs mb-2">{{ 'lastSuccessfulRun' | $t }}</div>
+        <div>{{ getLastSuccessfulRun() }}</div>
+    </div>
+
+    <div class="mt-5 flex justify-content-between">
+        <div>
+            <div class="uppercase text-xs mb-2">{{ 'nextScheduledRun' | $t }}</div>
+            <div>{{ getNextScheduledRun() }}</div>
+        </div>
+        <div>
+            <div *ngIf="isEnabled()" class="button button-outline button-outline-warning" role="button" (click)="disable()">{{ 'disable' | $t }}</div>
+            <div *ngIf="!isEnabled()" class="button button-outline button-outline-success" role="button" (click)="enable()">{{ 'enable' | $t }}</div>
+        </div>
+    </div>
+</div>

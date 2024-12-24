@@ -45,6 +45,10 @@ export function milliSecondsToMinutesAndSeconds(ms: number): [number, number] {
     return [minutes, seconds];
 }
 
+export function formatNumberWithThousandCommas(input: number): string {
+    return input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export type ImageSize = 'small' | 'medium' | 'large';
 export function pickImageFromArray(images: ImageApiDto[] | undefined, mode: ImageSize): ImageApiDto | null {
     if (isNotDefined(images) || (images as ImageApiDto[]).length === 0) {

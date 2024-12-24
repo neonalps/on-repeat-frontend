@@ -1,5 +1,6 @@
 import { validateDefined } from "@src/app/util/validation";
 import { isNotDefined } from "./common";
+import { formatDate } from "@angular/common";
 
 export function getDateWithoutTime(input: Date): Date {
     validateDefined(input, "input");
@@ -66,4 +67,8 @@ export function getStartOfDayIsoString(date: string): string {
 
 export function getEndOfDayIsoString(date: string): string {
     return `${date}T23:59:59.999Z`;
+}
+
+export function formatJobDate(date: Date): string {
+    return formatDate(date, 'MMM d, y HH:mm', 'en-US')
 }
