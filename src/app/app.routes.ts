@@ -66,4 +66,9 @@ export const routes: Routes = [
         component: ArtistDetailsComponent,
         canActivate: [loggedInGuard],
     },
+    { 
+        path: '',
+        redirectTo: '/dashboard',
+        pathMatch: 'full',
+    },
 ];

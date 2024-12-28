@@ -8,9 +8,38 @@
             <div class="text-lg">{{ 'signed.in.as' | $t }} <span class="bold text-primary">{{ username }}</span></div>
 
             <section class="mt-6">
+                <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
+                    <div class="bold text-md pl-3 mb-6">{{ 'played.stats' | $t }}</div>
+                    <div class="flex">
+                        <app-loading *ngIf="loading; else profileInfoContent" />
+                        <ng-template #profileInfoContent>
+                            <div class="flex-auto align-self-center">
+                                <div class="border-r-1 border-r-solid border-r-white">
+                                    <div class="bold text-md center">{{ getTimesPlayed() }}</div>
+                                    <div class="uppercase text-xs mt-2 center">{{ 'played.times' | $t }}</div>
+                                </div>
+                            </div>
+                            <div class="flex-auto align-self-center">
+                                <div class="border-r-1 border-r-solid border-r-white">
+                                    <div class="bold text-md center">{{ getFirstPlayedAt() !== null ? (getFirstPlayedAt() | date) : '-' }}</div>
+                                    <div class="uppercase text-xs mt-2 center">{{ 'played.first' | $t }}</div>
+                                </div>
+                            </div>
+                            <div class="flex-auto align-self-center">
+                                <div>
+                                    <div class="bold text-md center">{{ getLastPlayedAt() !== null ? (getLastPlayedAt() | date) : '-' }}</div>
+                                    <div class="uppercase text-xs mt-2 center">{{ 'played.last' | $t }}</div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </section>
+            </section>
+
+            <section class="mt-6">
                 <div class="section-title mb-4">{{ 'connectedAccounts.title' | $t }}</div>
                 <div>
-                    <app-loading *ngIf="loading; else loadedContent" />
+                    <app-loading *ngIf="accountTokensLoading; else loadedContent" />
                     <ng-template #loadedContent>
                         <ng-container *ngIf="accountTokens.length > 0; else emptyList">
                             <ng-container *ngFor="let accountToken of accountTokens">
@@ -22,6 +51,23 @@
                             <div>
                                 <div class="spotify-button mt-2" role="button" (click)="connectSpotify()">{{ 'connect.spotify' | $t }}</div>
                             </div>
+                        </ng-template>
+                    </ng-template>
+                </div>
+            </section>
+
+            <section class="mt-6">
+                <div class="section-title mb-4">{{ 'accountJobs.title' | $t }}</div>
+                <div>
+                    <app-loading *ngIf="accountJobsLoading; else loadedAccountJobsContent" />
+                    <ng-template #loadedAccountJobsContent>
+                        <ng-container *ngIf="accountJobs.length > 0; else emptyAccountJobsList">
+                            <ng-container *ngFor="let accountJob of accountJobs">
+                                <app-account-job [accountJob]="accountJob" (onEnable)="enableAccountJob($event)" (onDisable)="disableAccountJob($event)" />
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #emptyAccountJobsList>
+                            <div class="mt-2">{{ 'accountJobs.empty' | $t }}</div>
                         </ng-template>
                     </ng-template>
                 </div>

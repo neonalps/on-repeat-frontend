@@ -5,10 +5,11 @@ import { ActivatedRoute, NavigationEnd, NavigationSkipped, Router } from '@angul
 import { Store } from '@ngrx/store';
 import { AccountChartItemComponent, ChartItem } from '@src/app/components/account-chart-item/account-chart-item.component';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
+import { TranslationService } from '@src/app/i18n/translation.service';
 import { AccountChartItemApiDto, ArtistApiDto, TrackApiDto } from '@src/app/models';
 import { ChartService } from '@src/app/services/chart/chart.service';
 import { hideSearch } from '@src/app/ui-state/store/ui-state.actions';
-import { hasText, pickImageFromArray } from '@src/app/util/common';
+import { formatNumberWithThousandCommas, hasText, pickImageFromArray } from '@src/app/util/common';
 import { PATH_PARAM_CHART_PERIOD_SLUG, PATH_PARAM_CHART_TYPE } from '@src/app/util/router';
 import { take } from 'rxjs';
 
@@ -29,12 +30,15 @@ export class ChartPeriodComponent {
 
   private chartItems: ChartItem[] = [];
   private title?: string;
+  private timesPlayed?: number;
 
   constructor(
     private readonly chartService: ChartService,
     private readonly route: ActivatedRoute,
     private readonly router: Router, 
-    private readonly store: Store) {
+    private readonly store: Store,
+    private readonly translationService: TranslationService,
+  ) {
     this.router.events
       .pipe(takeUntilDestroyed())
       .subscribe(value => {
@@ -56,6 +60,15 @@ export class ChartPeriodComponent {
     return `🗓️ ${this.title || ""}`;
   }
 
+  getTimesPlayedText(): string {
+    const timesPlayed: number = this.timesPlayed ?? 0;
+
+    const prefix = this.translationService.translate('stats.timesPlayedTotalPrefix');
+    const suffix = this.translationService.translate('stats.timesPlayedTotalSuffix');
+
+    return `${prefix} ${formatNumberWithThousandCommas(timesPlayed)} ${timesPlayed === 1 ? suffix.substring(0, -1) : suffix}`;
+  }
+
   private loadChartPeriodDetails() {
     const chartType = this.route.snapshot.paramMap.get(PATH_PARAM_CHART_TYPE) as string;
     const period = this.route.snapshot.paramMap.get(PATH_PARAM_CHART_PERIOD_SLUG) as string;
@@ -69,6 +82,7 @@ export class ChartPeriodComponent {
       .subscribe({
         next: response => {
           this.chartItems = this.convertResponse(response.type, response.items);
+          this.timesPlayed = response.stats?.tracksPlayed;
           this.isLoading = false;
         },
         error: error => {
