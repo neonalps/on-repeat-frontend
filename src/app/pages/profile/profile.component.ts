@@ -3,13 +3,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { AccountTokenService } from '@src/app/account-tokens/account-token.service';
+import { AccountTokenService } from '@src/app/services/account-tokens/account-token.service';
 import { selectAuthUser } from '@src/app/auth/store/auth.selectors';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
-import { AccountJobApiDto, AccountTokenApiDto, AuthUser, OAuthConfig, PaginatedResponseDto } from '@src/app/models';
+import { AccountJobApiDto, AccountTokenApiDto, AuthUser, OAuthConfig, PaginatedResponseDto, PlayedInfoApiDto, ProfileInfoApiDto } from '@src/app/models';
 import { AppState } from '@src/app/store.index';
-import { isDefined, isNotDefined } from '@src/app/util/common';
+import { formatNumberWithThousandCommas, isDefined, isNotDefined } from '@src/app/util/common';
 import { filter, first, take } from 'rxjs';
 import { environment } from '@src/environments/environment';
 import { OAuthContext } from '@src/app/oauth/spotify/oauth.spotify.component';
@@ -18,7 +18,8 @@ import { AccountTokenComponent } from '@src/app/components/account-token/account
 import { ModalEvent, ModalOptions, ModalService } from '@src/app/modal/modal.service';
 import { TranslationService } from '@src/app/i18n/translation.service';
 import { AccountJobComponent } from '@src/app/components/account-job/account-job.component';
-import { AccountJobService } from '@src/app/account-jobs/account-job.service';
+import { AccountJobService } from '@src/app/services/account-jobs/account-job.service';
+import { ProfileService } from '@src/app/services/profile/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,11 +39,14 @@ export class ProfileComponent {
   accountJobsLoading: boolean = false;
   accountTokens: AccountTokenApiDto[] = [];
   accountTokensLoading: boolean = false;
+  loading: boolean = false;
+  playedInfo: PlayedInfoApiDto | null = null;
   username: string | null = null;
 
   constructor(
     private readonly accountJobService: AccountJobService,
     private readonly accountTokenService: AccountTokenService,
+    private readonly profileService: ProfileService,
     private readonly modalService: ModalService,
     private readonly store: Store<AppState>,
     private readonly translationService: TranslationService,
@@ -52,9 +56,7 @@ export class ProfileComponent {
       .subscribe(value => {
         this.username = isDefined(value) ? (value as AuthUser).username : null;
       });
-
-      this.loadAccountTokens();
-      this.loadAccountJobs();
+      this.loadProfileInfo();
   }
 
   connectSpotify(): void {
@@ -137,19 +139,39 @@ export class ProfileComponent {
       })
   }
 
-  private loadAccountJobs(): void {
-    this.accountJobsLoading = true;
+  getFirstPlayedAt(): Date | null {
+    return this.playedInfo === null ? null : this.playedInfo.firstPlayedAt;  
+  }
 
-    this.accountJobService.fetchAccountJobs()
+  getLastPlayedAt(): Date | null {
+    return this.playedInfo === null ? null : this.playedInfo.lastPlayedAt;
+  }
+
+  getTimesPlayed(): string {
+    return this.playedInfo === null ? "-" : formatNumberWithThousandCommas(this.playedInfo.timesPlayed);
+  }
+
+  private loadProfileInfo(): void {
+    this.loading = true;
+    this.accountJobsLoading = true;
+    this.accountTokensLoading = true;
+
+    this.profileService.fetchProfileInfo()
       .pipe(first())
       .subscribe({
-        next: (response: PaginatedResponseDto<AccountJobApiDto>) => {
-          this.accountJobs = response.items;
+        next: (response: ProfileInfoApiDto) => {
+          this.accountJobs = response.accountJobs.items;
+          this.accountTokens = response.accountTokens.items;
+          this.playedInfo = response.playedInfo;
+          this.loading = false;
           this.accountJobsLoading = false;
+          this.accountTokensLoading = false;
         },
         error: (error: HttpErrorResponse) => {
           console.error(error);
+          this.loading = false;
           this.accountJobsLoading = false;
+          this.accountTokensLoading = false;
         } 
       });
   }

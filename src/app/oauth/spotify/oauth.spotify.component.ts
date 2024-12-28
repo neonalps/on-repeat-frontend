@@ -5,7 +5,7 @@ import { AuthService } from '@src/app/auth/auth.service';
 import { hasText, isDefined } from '@src/app/util/common';
 import { first } from 'rxjs';
 import { decode } from '@src/app/util/base64';
-import { AccountTokenService } from '@src/app/account-tokens/account-token.service';
+import { AccountTokenService } from '@src/app/services/account-tokens/account-token.service';
 
 @Component({
   selector: 'app-oauth-spotify',

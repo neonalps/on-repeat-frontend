@@ -93,6 +93,12 @@ export interface AccountTokenApiDto {
     createdAt: Date;
 }
 
+export interface ProfileInfoApiDto {
+    accountJobs: PaginatedResponseDto<AccountJobApiDto>,
+    accountTokens: PaginatedResponseDto<AccountTokenApiDto>,
+    playedInfo: PlayedInfoApiDto,
+}
+
 export interface CreateAccountTokenResponseDto {
     success: boolean;
     error?: string;
