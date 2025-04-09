@@ -23,7 +23,7 @@
                 <button class="button-secondary" (click)="loadMore()">{{ 'recentlyPlayedTracks.loadMore' | $t }}</button>
             </div>
             <ng-container *ngIf="loading">
-                <div class="mt-8">{{ 'loading' | $t }}</div>
+                <app-loading />
             </ng-container>
             <ng-template #emptyList>
                 <div class="mt-8">{{ 'recentlyPlayedTracks.empty' | $t }}</div>
