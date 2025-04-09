@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountChartComponent } from '@src/app/components/account-chart/account-chart.component';
 import { CommonModule } from '@angular/common';
 import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
