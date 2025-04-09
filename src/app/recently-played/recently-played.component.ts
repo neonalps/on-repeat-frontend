@@ -12,6 +12,7 @@ import { navigateToTrackDetails } from '@src/app/util/router';
 import { PlayedTracksOnDate, PlayedTrackService } from '@src/app/services/played-track/played-track.service';
 import { isDefined } from '@src/app/util/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LoadingComponent } from '@src/app/components/loading/loading.component';
 
 @Component({
   selector: 'app-recently-played',
@@ -20,6 +21,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     CommonModule,
     FilterComponent,
     I18nPipe,
+    LoadingComponent,
     PlayedTrackComponent,
     ReloadComponent,
     ScrollNearEndDirective,
