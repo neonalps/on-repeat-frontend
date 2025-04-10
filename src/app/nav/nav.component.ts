@@ -13,7 +13,7 @@ import { I18nPipe } from '@src/app/i18n/i18n.pipe';
 import { AuthService } from '@src/app/auth/auth.service';
 import { SearchComponent } from '@src/app/components/search/search.component';
 import { SearchService } from '@src/app/services/search.service';
-import { Subject, debounceTime, exhaustMap, tap } from 'rxjs';
+import { Subject, debounceTime, switchMap, tap } from 'rxjs';
 import { LoadingComponent } from '@src/app/components/loading/loading.component';
 import { isDefined, pickImageFromArray } from '@src/app/util/common';
 import { navigateToArtistDetails, navigateToChartDetails, navigateToTrackDetails } from '../util/router';
@@ -87,7 +87,7 @@ export class NavComponent {
       takeUntilDestroyed(),
       debounceTime(300),
       tap(() => this.isSearching = true),
-      exhaustMap(value => this.searchService.search(value))
+      switchMap(value => this.searchService.search(value))
     ).subscribe(response => this.processSearchResult(response));
   }
 
