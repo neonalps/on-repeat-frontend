@@ -4,6 +4,7 @@
     border: 4px solid #949494;
     border-top: 4px solid white;
     margin-top: 1.5em;
+    margin-bottom: 1em;
     border-radius: 50%;
     
     transition-property: transform;
