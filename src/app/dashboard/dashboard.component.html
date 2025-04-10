@@ -8,7 +8,7 @@
             <section class="w-full">
                 <div class="bg-color-dark-grey-lighter-10 p-2 rounded-lg">
                     <div class="bold text-lg center">{{ 'charts.currentFavourites' | $t }}</div>
-                    <ng-container *ngIf="isLoading(); else loadedContentCurrent">
+                    <ng-container *ngIf="isLoading; else loadedContentCurrent">
                         <app-loading />
                     </ng-container>
                     <ng-template #loadedContentCurrent>
@@ -40,7 +40,7 @@
             <section class="mt-8 w-full">
                 <div class="bg-color-dark-grey-lighter-10 p-2 rounded-lg">
                     <div class="bold text-lg center">{{ 'charts.allTimeFavourites' | $t }}</div>
-                    <ng-container *ngIf="isLoading(); else loadedContentAllTime">
+                    <ng-container *ngIf="isLoading; else loadedContentAllTime">
                         <app-loading />
                     </ng-container> 
                     <ng-template #loadedContentAllTime>
