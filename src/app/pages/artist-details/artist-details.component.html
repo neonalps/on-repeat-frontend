@@ -47,10 +47,15 @@
                 </section>
                 <section class="mt-6 bg-color-dark-grey-lighter-10 pt-4 pb-3 rounded-lg">
                     <div class="bold text-md pl-3 mb-6">{{ 'tracks.favourite' | $t }}</div>
-                    <div class="px-2">
-                        <ng-container *ngFor="let playedTrack of getPlayedTracks()">
-                            <app-account-chart-item [item]="playedTrack" [hidePlace]="true" [notBold]="true" />
+                    <div class="px-2 w-full">
+                        <ng-container *ngIf="isPlayedTracksLoading; else loadedContentPlayedTracks">
+                            <app-loading />
                         </ng-container>
+                        <ng-template #loadedContentPlayedTracks>
+                            <ng-container *ngFor="let playedTrack of getPlayedTracks()">
+                                <app-account-chart-item [item]="playedTrack" [hidePlace]="true" [notBold]="true" />
+                            </ng-container>
+                        </ng-template>
                     </div>
                 </section>
             </section>
