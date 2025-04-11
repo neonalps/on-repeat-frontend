@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
           this.currentTrackCharts = basicDashboard.charts.tracks.current.items.map(item => this.mapTrackToChartItem(item));
           this.allTimeTrackCharts = basicDashboard.charts.tracks.allTime.items.map(item => this.mapTrackToChartItem(item));
           this.currentArtistCharts = basicDashboard.charts.artists.current.items.map(item => this.mapArtistToChartItem(item));
-          this.allTimeTrackCharts = basicDashboard.charts.artists.allTime.items.map(item => this.mapArtistToChartItem(item));
+          this.allTimeArtistCharts = basicDashboard.charts.artists.allTime.items.map(item => this.mapArtistToChartItem(item));
           this.isLoading = false;
         },
         error: (error: HttpErrorResponse) => {

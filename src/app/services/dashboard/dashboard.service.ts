@@ -12,11 +12,12 @@ export class DashboardService {
   private static readonly BASIC_DASHBOARD_URL =`${environment.apiBaseUrl}/api/v1/dashboard`;
 
   private basicDashboard: BasicDashboardInformationApiDto | null = null;
+  private dashboardDate: Date | null = null;
 
   constructor(private readonly http: HttpClient) {}
 
   getDashboard(): Observable<BasicDashboardInformationApiDto> {
-    if (this.basicDashboard !== null) {
+    if (this.basicDashboard !== null && this.isDashboardStillValid()) {
       return of(this.basicDashboard);
     }
 
@@ -25,6 +26,7 @@ export class DashboardService {
         take(1),
         tap((dashboard: BasicDashboardInformationApiDto) => {
           this.basicDashboard = dashboard;
+          this.dashboardDate = new Date();
         }),
       );
   }
@@ -32,4 +34,16 @@ export class DashboardService {
   private fetchBasicDashboard(): Observable<BasicDashboardInformationApiDto> {
     return this.http.get<BasicDashboardInformationApiDto>(DashboardService.BASIC_DASHBOARD_URL);
   }
+
+  private isDashboardStillValid(): boolean {
+    if (this.dashboardDate === null) {
+      return false;
+    }
+
+    const now = new Date();
+    return now.getDate() === this.dashboardDate.getDate() &&
+        now.getMonth() === this.dashboardDate.getMonth() && 
+        now.getFullYear() === this.dashboardDate.getFullYear();
+  }
+
 }
