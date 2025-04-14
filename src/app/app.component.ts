@@ -48,8 +48,10 @@ export class AppComponent {
     return this.modalService.isActive();
   }
 
-  @HostListener('document:keypress.alt.f')
-  handleSearchKeyEvent() {
-    this.store.dispatch(toggleSearch());
+  @HostListener('document:keypress', ['$event'])
+  handleSearchKeyEvent(event: KeyboardEvent) {
+    if (event.keyCode === 402) {
+      this.store.dispatch(toggleSearch());
+    }
   }
 }
