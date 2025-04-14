@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, HostListener, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from '@src/app/nav/nav.component';
@@ -9,6 +9,7 @@ import { AppState } from './store.index';
 import { Store } from '@ngrx/store';
 import { selectMenuVisible } from './ui-state/store/ui-state.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toggleSearch } from './ui-state/store/ui-state.actions';
 
 @Component({
   selector: 'app-root',
@@ -45,5 +46,10 @@ export class AppComponent {
 
   isModalActive(): boolean {
     return this.modalService.isActive();
+  }
+
+  @HostListener('document:keypress.alt.f')
+  handleSearchKeyEvent() {
+    this.store.dispatch(toggleSearch());
   }
 }
