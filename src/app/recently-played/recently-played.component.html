@@ -9,25 +9,27 @@
             </div>
         </section>
         <section class="page-content-main">
-            <ng-container *ngIf="playedTracksOnDate.length > 0; else emptyList">
-                <ng-container *ngFor="let playedTrackGroup of playedTracksOnDate">
-                    <div>
-                        <div class="sticky top-0 z-10 sticky-header">
-                            <div class="relative bold">{{ playedTrackGroup.date | date:'EEE MMM d, YYY' }}</div>
-                        </div>
-                        <app-played-track *ngFor="let playedTrack of playedTrackGroup.tracks" [playedTrack]="playedTrack" (click)="goToTrack(playedTrack.track.id, playedTrack.track.name)" />
-                    </div>
-                </ng-container>
-            </ng-container>
-            <div class="center" *ngIf="isLoadMoreAvailable()">
-                <button class="button-secondary" (click)="loadMore()">{{ 'recentlyPlayedTracks.loadMore' | $t }}</button>
-            </div>
-            <ng-container *ngIf="loading">
+            <ng-container *ngIf="loading; else loadedContent">
                 <app-loading />
             </ng-container>
-            <ng-template #emptyList>
-                <div class="mt-8">{{ 'recentlyPlayedTracks.empty' | $t }}</div>
-            </ng-template>    
+            <ng-template #loadedContent>
+                <ng-container *ngIf="playedTracksOnDate.length > 0; else emptyList">
+                    <ng-container *ngFor="let playedTrackGroup of playedTracksOnDate">
+                        <div>
+                            <div class="sticky top-0 z-10 sticky-header">
+                                <div class="relative bold">{{ playedTrackGroup.date | date:'EEE MMM d, YYY' }}</div>
+                            </div>
+                            <app-played-track *ngFor="let playedTrack of playedTrackGroup.tracks" [playedTrack]="playedTrack" (click)="goToTrack(playedTrack.track.id, playedTrack.track.name)" />
+                        </div>
+                    </ng-container>
+                    <div class="center" *ngIf="isLoadMoreAvailable()">
+                        <button class="button-secondary" (click)="loadMore()">{{ 'recentlyPlayedTracks.loadMore' | $t }}</button>
+                    </div>
+                </ng-container>
+                <ng-template #emptyList>
+                    <div class="mt-8">{{ 'recentlyPlayedTracks.empty' | $t }}</div>
+                </ng-template>
+            </ng-template>
         </section>
     </section>
     <section class="large-screen-placeholder"></section>
