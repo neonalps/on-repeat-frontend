@@ -68,7 +68,7 @@
                             <ng-container *ngFor="let trackHistoryGroup of getTrackHistoryOnDate()">
                                 <div class="bg-color-dark-grey-lighter-20 p-2 mt-4 rounded">
                                     <div class="flex justify-content-between">
-                                        <div class="bold mb-2 pointer hover:text-primary" (click)="goToDate(trackHistoryGroup.date)">{{ trackHistoryGroup.date | date:'EEE MMM d, YYY' }}</div>
+                                        <div class="bold mb-2 pointer hover:text-primary" (click)="goToDate(trackHistoryGroup.date)">{{ trackHistoryGroup.date | date:'EEE MMM d, yyyy' }}</div>
                                         <div class="text-sm mr-2">{{ getTimesPlayedOnDay(trackHistoryGroup.historyItems) }}</div>
                                     </div>
                                     <div *ngFor="let entry of trackHistoryGroup.historyItems" class="flex justify-content-between mt-3">
