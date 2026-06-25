@@ -239,7 +239,7 @@ export class TrackDetailsComponent {
       return null;
     }
 
-    return `${items.length} ${this.translationService.translate('times')}`;
+    return `${includeInStatisticsPlays} ${this.translationService.translate('times')}`;
   }
 
   hasChartEntries(): boolean {
